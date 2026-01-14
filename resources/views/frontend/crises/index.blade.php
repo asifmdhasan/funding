@@ -1,6 +1,14 @@
 @extends('layouts.guest-master')
 
 @section('content')
+<style>
+    .progress {
+        background-color: #e9ecef;
+    }
+    .progress-bar {
+        background-color: green;
+    }
+</style>
 <div class="container py-4">
     <div class="row justify-content-center">
 
@@ -20,8 +28,12 @@
                             <div class="progress-bar" role="progressbar" style="width: {{ $percent }}%;" aria-valuenow="{{ $percent }}" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
 
-                        <small>
+                        <small class="d-block mb-2">
                             {{ number_format($collected) }} / {{ number_format($crisis->target_amount) }}
+                        </small>
+
+                        <small class="text-muted">
+                            Colected: {{ round($percent, 2) }}%
                         </small>
 
                         <!-- View page link -->

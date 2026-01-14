@@ -10,16 +10,14 @@
             <div class="card text-white bg-primary h-100">
                 <div class="card-body d-flex align-items-center justify-content-between">
                     <div>
-                        <h5 class="card-title">Total Customers</h5>
-                        <h2 class="card-text">{{ $totalCustomers }}</h2>
+                        <h5 class="card-title">Total Crisis</h5>
+                        <h2 class="card-text">{{ $totalCrisis }}</h2>
                     </div>
                     <div>
                         <i class="bi bi-people-fill" style="font-size: 2.5rem;"></i>
                     </div>
                 </div>
-                <div class="card-footer bg-transparent border-top-0">
-                    <small class="text-white-50">Verified and active customers</small>
-                </div>
+
             </div>
         </div>
 
@@ -28,16 +26,14 @@
             <div class="card text-white bg-success h-100">
                 <div class="card-body d-flex align-items-center justify-content-between">
                     <div>
-                        <h5 class="card-title">Total Businesses</h5>
-                        <h2 class="card-text">{{ $totalBusinesses }}</h2>
+                        <h5 class="card-title">Total Donor</h5>
+                        <h2 class="card-text">{{ $totalDonor }}</h2>
                     </div>
                     <div>
                         <i class="bi bi-building" style="font-size: 2.5rem;"></i>
                     </div>
                 </div>
-                <div class="card-footer bg-transparent border-top-0">
-                    <small class="text-white-50">All registered businesses</small>
-                </div>
+
             </div>
         </div>
 
@@ -46,16 +42,14 @@
             <div class="card text-white bg-warning h-100">
                 <div class="card-body d-flex align-items-center justify-content-between">
                     <div>
-                        <h5 class="card-title">Approved Businesses</h5>
-                        <h2 class="card-text">{{ $approvedBusinesses }}</h2>
+                        <h5 class="card-title">Total Category</h5>
+                        <h2 class="card-text">{{ $totalCategory }}</h2>
                     </div>
                     <div>
                         <i class="bi bi-check-circle-fill" style="font-size: 2.5rem;"></i>
                     </div>
                 </div>
-                <div class="card-footer bg-transparent border-top-0">
-                    <small class="text-white-50">Approved and verified</small>
-                </div>
+
             </div>
         </div>
     </div>

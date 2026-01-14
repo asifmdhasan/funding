@@ -6,7 +6,7 @@
     <div class="d-flex justify-content-between mb-3">
         <h4 class="fw-bold">Crises</h4>
         <a href="{{ route('crises.create') }}" class="btn btn-primary">
-            + Add Crisis
+            Add Crisis
         </a>
     </div>
 
@@ -15,7 +15,7 @@
             <table class="table table-bordered" id="crisisTable">
                 <thead class="table-light">
                 <tr>
-                    <th>#</th>
+                    <th>SL</th>
                     <th>Title</th>
                     <th>Category</th>
                     <th>City</th>

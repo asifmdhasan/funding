@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Donor;
+use App\Models\Donation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -82,6 +83,16 @@ class DonorController extends Controller
         $donor = auth('donor')->user();
         $donor->update($request->all());
         return redirect()->route('donor.profile')->with('success', 'Profile updated successfully');
+    }
+
+    public function donations()
+    {
+        $donations = Donation::with('crisis')
+            ->where('donor_id', auth('donor')->id())
+            ->latest()
+            ->get();
+
+        return view('frontend.donation.index', compact('donations'));
     }
 
 
