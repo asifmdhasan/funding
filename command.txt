@@ -1,0 +1,4 @@
+mklink /D C:\laragon\www\CameraUploader\public\uploads D:\CameraUploader\uploads
+symbolic link created for C:\laragon\www\CameraUploader\public\uploads <<===>> D:\CameraUploader\uploads
+
+Show: dir C:\laragon\www\CameraUploader\public\uploads
