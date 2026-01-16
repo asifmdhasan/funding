@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Mpdf\Mpdf;
 use App\Models\Donor;
 use App\Models\Donation;
 use Illuminate\Http\Request;
@@ -95,6 +96,35 @@ class DonorController extends Controller
         return view('frontend.donation.index', compact('donations'));
     }
 
+    public function printDonations()
+    {
+        $donor = auth('donor')->user();
+        $donations = Donation::with('crisis')
+            ->where('donor_id', $donor->id)
+            ->latest()
+            ->get();
 
+        $totalAmount = $donations->sum('amount');
+
+        // Load Blade view as HTML
+        $html = view('frontend.donation.pdf', compact('donor', 'donations', 'totalAmount'))->render();
+
+        // Create PDF
+        $mpdf = new Mpdf([
+            'format' => 'A4',
+            'margin_left' => 10,
+            'margin_right' => 10,
+            'margin_top' => 10,
+            'margin_bottom' => 10,
+        ]);
+
+        $mpdf->WriteHTML($html);
+
+        // Output PDF (force download)
+        return $mpdf->Output("My_Donations_{$donor->name}.pdf", 'I');
+        // return $mpdf->Output("My_Donations_{$donor->name}.pdf", 'D');
+    }
+
+    
 
 }

@@ -30,12 +30,6 @@
                         </small>
                     </div>
 
-                    <!-- Donate Button triggers modal -->
-                    <style>
-                        .btn
-                        {
-                            background-color;red;
-                        }
 
                     <p class="text-center">
                         <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#donateModal">

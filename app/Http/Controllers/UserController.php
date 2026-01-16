@@ -82,7 +82,7 @@ class UserController extends Controller
             'notifications_enabled' => $request->notifications_enabled,
         ]);
 
-        return redirect()->route('user.index')->with('success', __('layouts.created_successfully'));
+        return redirect()->route('user.index')->with('success', 'created successfully');
     }
 
     public function show(string $id)
@@ -143,13 +143,13 @@ class UserController extends Controller
             'notifications_enabled' => $request->notifications_enabled,
         ]);
 
-        return redirect()->route('user.index')->with('success',  __('layouts.updated_successfully'));
+        return redirect()->route('user.index')->with('success', 'updated successfully');
     }
 
     public function destroy(User $user)
     {
         $user->delete();
-        return redirect()->route('user.index')->with('success',  __('layouts.deleted_successfully'));
+        return redirect()->route('user.index')->with('success', 'deleted successfully');
     }
 
     public function userSettings()

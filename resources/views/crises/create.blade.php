@@ -13,7 +13,7 @@
 
             <div class="card-body">
 
-                <form action="{{ route('crises.store') }}" method="POST">
+                <form action="{{ route('crises.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
 
                     {{-- Category --}}
@@ -69,7 +69,15 @@
                                   class="form-control"></textarea>
                     </div>
 
-                    
+                    {{-- Image --}}
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Image</label>
+                        <input type="file" name="image_url"
+                               class="form-control @error('image_url') is-invalid @enderror">
+                        @error('image_url')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
 
                     {{-- Actions --}}
                     <div class="text-end">

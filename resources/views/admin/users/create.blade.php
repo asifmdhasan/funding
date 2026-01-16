@@ -7,7 +7,7 @@
         <div class="card shadow-sm">
             <div class="card-header ">
                 <h5 class="mb-0">
-                    Create User
+                    Create Admin
                 </h5>
             </div>
 

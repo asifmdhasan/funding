@@ -7,7 +7,7 @@
         <div class="card shadow-sm">
             <div class="card-header">
                 <h5 class="mb-0">
-                    Edit Crisis Category
+                    Edit Category
                 </h5>
             </div>
 

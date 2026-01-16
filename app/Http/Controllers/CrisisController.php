@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Donor;
 use App\Models\Crisis;
 use App\Models\Category;
+use App\Models\Donation;
 use Illuminate\Http\Request;
 
 class CrisisController extends Controller
@@ -27,6 +28,35 @@ class CrisisController extends Controller
     /**
      * Store a newly created resource.
      */
+    // public function store(Request $request)
+    // {
+    //     $request->validate([
+    //         'category_id'   => 'required|exists:categories,id',
+    //         'title'         => 'required|string|max:255',
+    //         'description'   => 'nullable|string',
+    //         'city'          => 'nullable|string|max:255',
+    //         'target_amount' => 'required|numeric|min:1',
+    //         'image_url'     => 'nullable|image',
+    //     ]);
+
+    //     // Get all validated data
+    //     $data = $request->only(['category_id', 'title', 'description', 'city', 'target_amount', 'image_url']);
+
+    //     // Handle IMAGE upload
+    //     if ($request->hasFile('image_url')) {
+    //         $image = $request->file('image_url');
+    //         $imageName = time() . '_' . $image->getClientOriginalName(); 
+    //         $image->move(public_path('assets/img/crisis'), $imageName); 
+    //         $data['image_url'] = 'assets/img/crisis/' . $imageName;
+    //     }
+
+    //     Crisis::create($data);
+
+    //     return redirect()
+    //         ->route('crises.index')
+    //         ->with('success', 'Crisis created successfully.');
+    // }
+
     public function store(Request $request)
     {
         $request->validate([
@@ -35,14 +65,24 @@ class CrisisController extends Controller
             'description'   => 'nullable|string',
             'city'          => 'nullable|string|max:255',
             'target_amount' => 'required|numeric|min:1',
+            'image_url'     => 'nullable|image|max:5120',
         ]);
 
-        Crisis::create($request->all());
+        $data = $request->only(['category_id', 'title', 'description', 'city', 'target_amount']);
 
-        return redirect()
-            ->route('crises.index')
-            ->with('success', 'Crisis created successfully.');
+        if ($request->hasFile('image_url')) {
+            $image = $request->file('image_url');
+            $imageName = time() . '_' . $image->getClientOriginalName();
+            $image->move(public_path('assets/img/crisis'), $imageName);
+            $data['image_url'] = 'assets/img/crisis/' . $imageName; // THIS is the public path
+        }
+
+        Crisis::create($data);
+
+        return redirect()->route('crises.index')->with('success', 'Crisis created successfully.');
     }
+
+
 
     /**
      * Show the form for editing the specified resource.
@@ -64,14 +104,33 @@ class CrisisController extends Controller
             'description'   => 'nullable|string',
             'city'          => 'nullable|string|max:255',
             'target_amount' => 'required|numeric|min:1',
+            'image_url'     => 'nullable|image|max:5120', // allow all images up to 5MB
         ]);
 
-        $crisis->update($request->all());
+        // Collect all validated data except image
+        $data = $request->only(['category_id', 'title', 'description', 'city', 'target_amount']);
+
+        // Handle IMAGE upload
+        if ($request->hasFile('image_url')) {
+            // Delete old image if exists
+            if ($crisis->image_url && file_exists(public_path($crisis->image_url))) {
+                unlink(public_path($crisis->image_url));
+            }
+
+            $image = $request->file('image_url');
+            $imageName = time() . '_' . $image->getClientOriginalName();
+            $image->move(public_path('assets/img/crisis'), $imageName);
+            $data['image_url'] = 'assets/img/crisis/' . $imageName; // save new path
+        }
+
+        // Update crisis
+        $crisis->update($data);
 
         return redirect()
             ->route('crises.index')
             ->with('success', 'Crisis updated successfully.');
     }
+
 
     /**
      * Remove the specified resource.
@@ -93,11 +152,87 @@ class CrisisController extends Controller
 
 
     // Show crises analytics
-    public function crisisAnalytics()
-    {
-        $crises = Crisis::with('donations')->get();
-        $donors  = Donor::orderBy('name')->get();
+    // public function crisisAnalytics()
+    // {
+    //     $crises = Crisis::with('donations')->get();
+    //     $donors  = Donor::orderBy('name')->get();
 
-        return view('crises.analytics', compact('crises', 'donors'));
+    //     return view('crises.analytics', compact('crises', 'donors'));
+    // }
+    public function crisisAnalytics(Request $request)
+    {
+        $crises = Donation::query()
+            ->selectRaw('crisis_id, SUM(amount) as total_amount')
+            ->with(['crisis.category'])
+            ->when($request->crisis_id, function ($q) use ($request) {
+            $q->where('crisis_id', $request->crisis_id);
+            })
+            ->groupBy('crisis_id')
+            ->get();
+
+        $crisisList = Crisis::orderBy('title')->get();
+
+        return view('crises.analytics', compact('crises', 'crisisList'));
     }
+    public function crisisAnalyticsDetails(Crisis $crisis)
+    {
+        $donations = Donation::query()
+            ->where('crisis_id', $crisis->id)
+            ->selectRaw('donor_id, SUM(amount) as total_amount, MAX(created_at) as last_donation_date')
+            ->groupBy('donor_id')
+            ->with('donor')
+            ->get();
+
+        $totalAmount = $donations->sum('total_amount');
+
+        return view('crises.analytics-details', compact(
+            'crisis',
+            'donations',
+            'totalAmount'
+        ));
+    }
+
+
+
+
+
+
+
+    public function donorReport(Request $request)
+    {
+        $donors = Donation::query()
+            ->selectRaw('donor_id, SUM(amount) as total_amount')
+            ->with('donor')
+            ->when($request->donor_id, function ($q) use ($request) {
+                $q->where('donor_id', $request->donor_id);
+            })
+            ->groupBy('donor_id')
+            ->paginate(10);
+
+        $donorList = Donor::orderBy('name')->get();
+
+        return view('crises.donor-report', compact('donors', 'donorList'));
+    }
+
+    /**
+     * Donor → crisis breakdown
+     */
+    public function donorReportDetails(Donor $donor)
+    {
+        $donations = Donation::query()
+            ->where('donor_id', $donor->id)
+            ->selectRaw('crisis_id, SUM(amount) as total_amount, MAX(created_at) as last_donation_date')
+            ->groupBy('crisis_id')
+            ->with(['crisis.category'])
+            ->get();
+
+        $totalAmount = $donations->sum('total_amount');
+
+        return view('crises.donor-report-details', compact(
+            'donor',
+            'donations',
+            'totalAmount'
+        ));
+    }
+
 }
