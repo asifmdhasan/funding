@@ -5,16 +5,15 @@
     <div class="col-md-6">
 
         <div class="card shadow-sm">
-            <div class="card-header bg-warning text-dark">
+            <div class="card-header">
                 <h5 class="mb-0">
-                    <i class="fa fa-edit me-2"></i>
                     Edit Crisis Category
                 </h5>
             </div>
 
             <div class="card-body">
 
-                <form action="{{ route('categories.update', $Category) }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('categories.update', $category) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
 
@@ -25,7 +24,7 @@
                         </label>
                         <input type="text"
                                name="name"
-                               value="{{ old('name', $Category->name) }}"
+                               value="{{ old('name', $category->name) }}"
                                class="form-control @error('name') is-invalid @enderror"
                                placeholder="Enter category name"
                                required>
@@ -38,24 +37,24 @@
                     </div>
 
                     {{-- Image --}}
-                    <div class="mb-3">
-                        <label class="form-label fw-semibold">
+                    {{-- <div class="mb-3"> --}}
+                        {{-- <label class="form-label fw-semibold">
                             Category Image
                         </label>
                         <!-- recomendation size 300x300 px -->
                         <p class="text-muted small">
                             Recommended size: 160 × 100 px
-                        </p>
+                        </p> --}}
                         {{-- Image preview --}}
-                        <div class="mb-2">
+                        {{-- <div class="mb-2">
                             <img id="imagePreview"
                                  src="{{ $Category->image ? asset('assets/' . $Category->image) : '' }}"
                                  alt="Image Preview"
                                  style="max-width: 150px; max-height: 150px; display: {{ $Category->image ? 'block' : 'none' }};"
                                  class="img-thumbnail">
-                        </div>
+                        </div> --}}
 
-                        <input type="file"
+                        {{-- <input type="file"
                                name="image"
                                id="imageInput"
                                class="form-control @error('image') is-invalid @enderror"
@@ -66,7 +65,7 @@
                                 {{ $message }}
                             </div>
                         @enderror
-                    </div>
+                    </div> --}}
 
                     {{-- Status --}}
                     <div class="mb-3">
@@ -75,10 +74,10 @@
                         </label>
                         <select name="status"
                                 class="form-select">
-                            <option value="1" {{ old('status', $Category->status) == 1 ? 'selected' : '' }}>
+                            <option value="1" {{ old('status', $category->status) == 1 ? 'selected' : '' }}>
                                 Active
                             </option>
-                            <option value="0" {{ old('status', $Category->status) == 0 ? 'selected' : '' }}>
+                            <option value="0" {{ old('status', $category->status) == 0 ? 'selected' : '' }}>
                                 Inactive
                             </option>
                         </select>
@@ -86,14 +85,11 @@
 
                     {{-- Actions --}}
                     <div class="d-flex justify-content-end gap-2 mt-4">
-                        <a href="{{ route('categories.index') }}"
-                           class="btn btn-outline-secondary">
-                            <i class="fa fa-arrow-left me-1"></i> Cancel
-                        </a>
+
 
                         <button type="submit"
                                 class="btn btn-warning text-dark">
-                            <i class="fa fa-save me-1"></i> Update
+                            Update
                         </button>
                     </div>
 

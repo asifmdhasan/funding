@@ -27,7 +27,7 @@ use App\Http\Controllers\FrontendGmeBusinessController;
 
 
 // FRONTEND
-Route::get('/crisis', [CrisisViewController::class, 'index'])->name('crisis.list');
+Route::get('/', [CrisisViewController::class, 'index'])->name('crisis.list');
 Route::get('/crisis/{id}', [CrisisViewController::class, 'show'])->name('crisis.show');
 //store donation
 Route::post('/crisis/{id}/donate', [CrisisViewController::class, 'donate'])->name('crisis.donate');
@@ -55,6 +55,10 @@ Route::middleware('auth:donor')->group(function () {
     Route::put('/donor/profile', [DonorController::class, 'updateProfile'])
         ->name('donor.update');
 
+    //Donor all donations list view table
+    Route::get('/donor/donations', [DonorController::class, 'donations'])->name('donor.donations');
+    // Route::get('/donor/success', [DonationController::class, 'paymentSuccess'])->name('payment.success');
+
     // Logout
     Route::post('/donor/logout', [DonorController::class, 'logout'])
         ->name('donor.logout');
@@ -71,8 +75,11 @@ Route::middleware([
 
 
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+        Route::get('/crises/report', [CrisisController::class, 'crisisAnalytics'])->name('crises.analytics');
+
     Route::resource('categories', CategoryController::class);
     Route::resource('crises', CrisisController::class);
+    //show crises analytics
 
 
 });
@@ -93,7 +100,7 @@ Route::middleware([
 
 
 Route::middleware(['web', 'setLocale'])->group(function () {
-    Route::get('/', [GuestController::class, 'landingPage']);
+    // Route::get('/', [GuestController::class, 'landingPage']);
 
     // Route::get('/gme-guest/business/register', [GuestController::class, 'showRegisterForm'])->name('gme.business.register.guest');
     // Route::post('/gme-guest/business/save-step', [GuestController::class, 'saveStep'])->name('gme.business.save-step.guest');
@@ -108,7 +115,7 @@ Route::middleware(['web', 'setLocale'])->group(function () {
     Route::get('/gme-guest-get-services/{categoryId}', [GuestController::class, 'getServices']);
     
     //Index
-    Route::get('/', [GuestController::class, 'guestIndex'])->name('guest.index');
+    // Route::get('/', [GuestController::class, 'guestIndex'])->name('guest.index');
     
     Route::get('/guest-gme-businesses', [GuestController::class, 'indexAjax'])->name('guest.gme-business.ajax');
         // get category ajax
@@ -126,7 +133,7 @@ Route::middleware(['web', 'setLocale'])->group(function () {
 
 
 
-    Route::get('/login', [AuthController::class, 'showLoginForm']);
+    Route::get('admin/login', [AuthController::class, 'showLoginForm']);
     Route::post('/login', [AuthController::class, 'login'])->name('login');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
@@ -172,7 +179,7 @@ Route::middleware(['setLocale'])->group(function () {
 
 
     Route::post('/business/save-step', [GmeRegController::class, 'saveStep'])->name('gme.business.save-step');
-    Route::get('/business/success', [GmeRegController::class, 'success'])->name('gme.business.success');
+    // Route::get('/business/success', [GmeRegController::class, 'success'])->name('gme.business.success');
     Route::get('/get-services/{category}', [GmeRegController::class, 'getServices'])->name('get.services');
 
 });

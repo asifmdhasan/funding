@@ -7,7 +7,7 @@
         <h4 class="fw-bold">Crisis Categories</h4>
         <a href="{{ route('categories.create') }}"
            class="btn btn-primary">
-            + Add Category
+            Add Category
         </a>
     </div>
 
@@ -22,9 +22,9 @@
             <table class="table table-bordered table-striped" id="categoriesTable">
                 <thead class="table-light">
                     <tr>
-                        <th>#</th>
+                        <th>SL</th>
                         <th>Name</th>
-                        <th>Image</th>
+                        {{-- <th>Image</th> --}}
                         <th>Status</th>
                         <th width="160">Action</th>
                     </tr>
@@ -34,7 +34,7 @@
                         <tr>
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $category->name }}</td>
-                            <td>
+                            {{-- <td>
                                 @if($category->image)
                                     <img src="{{ asset('assets/' . $category->image) }}"
                                          alt="{{ $category->name }}"
@@ -44,7 +44,7 @@
                                 @else
                                     N/A
                                 @endif
-                            </td>
+                            </td> --}}
                             <td>
                                 <span class="badge {{ $category->status ? 'bg-success' : 'bg-danger' }}">
                                     {{ $category->status ? 'Active' : 'Inactive' }}

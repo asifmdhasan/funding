@@ -4,7 +4,7 @@
 
         <!-- Branding -->
         <h4 class="text-center py-3 border-bottom">
-            Gme Network
+            Crowed Funding System
         </h4>
 
         <!-- Menu -->
@@ -18,12 +18,20 @@
                 </a>
             </li>
 
+            <!-- show analytics -->
             <li class="nav-item">
+                <a href="{{ route('crises.analytics') }}" 
+                   class="nav-link text-white fw-bold {{ request()->routeIs('crises.analytics') ? 'active' : '' }}">
+                    <i class="fa fa-chart-bar me-2"></i> Crises Report
+                </a>
+            </li>
+
+            {{-- <li class="nav-item">
                 <a href="{{ route('gme-business-admin.index') }}" 
                     class="nav-link text-white {{ request()->routeIs('gme-business-admin.index') ? 'active' : '' }}">
                     <i class="fa fa-list me-2"></i> All Business
                 </a>
-            </li>
+            </li> --}}
 
                         
 
@@ -150,6 +158,44 @@
                     </ul>
                 </div>
             </li> --}}
+
+
+
+
+            <li class="nav-item mt-3">
+                <a class="nav-link text-white d-flex justify-content-between align-items-center" 
+                data-bs-toggle="collapse" 
+                href="#usersMenu" 
+                role="button" 
+                aria-expanded="{{ request()->routeIs('user.*') ? 'true' : 'false' }}" 
+                aria-controls="usersMenu"
+                style="cursor: pointer;">
+                    <span>
+                        <i class="fa fa-users me-2"></i>
+                        <span class="text-uppercase small fw-bold">Users</span>
+                    </span>
+                    <i class="fa fa-chevron-down"></i>
+                </a>
+
+                <div class="collapse {{ request()->routeIs('user.*') ? 'show' : '' }}" id="usersMenu">
+                    <ul class="nav flex-column ms-3">
+                        <li class="nav-item">
+                            <a href="{{ route('user.index') }}" 
+                            class="nav-link text-white {{ request()->routeIs('user.index') ? 'active' : '' }}">
+                                <i class="fa fa-list me-2"></i> User Index
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('user.create') }}" 
+                            class="nav-link text-white {{ request()->routeIs('user.create') ? 'active' : '' }}">
+                                <i class="fa fa-plus-circle me-2"></i> User Create
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+
+
 
             <!-- Logout -->
             <li class="nav-item mt-4">

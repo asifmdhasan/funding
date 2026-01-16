@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container mt-5">
-    <h2 class="mb-4">GME Business Enlistment Form</h2>
+    <h2 class="mb-4">Crowed Funding Login System</h2>
 
     <form action="{{ route('gme-business.store') }}" method="POST" enctype="multipart/form-data" id="gmeForm">
         @csrf

@@ -13,6 +13,12 @@
             <a href="{{ route('crisis.list') }}" class="text-dark fw-semibold fs-5 text-decoration-none px-3 py-2 rounded hover-bg">
                 Crisis List
             </a>
+            <!-- if login user then see my donations -->
+            @auth('donor')
+            <a href="{{ route('donor.donations') }}" class="text-dark fw-semibold fs-5 text-decoration-none px-3 py-2 rounded hover-bg">
+                My Donations
+            </a>
+            @endauth
 
             {{-- <a href="{{ route('crises.index') }}" class="text-dark fw-semibold fs-5 text-decoration-none px-3 py-2 rounded hover-bg">
                 Donate

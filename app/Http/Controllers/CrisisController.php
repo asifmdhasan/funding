@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Donor;
 use App\Models\Crisis;
 use App\Models\Category;
 use Illuminate\Http\Request;
@@ -82,5 +83,21 @@ class CrisisController extends Controller
         return redirect()
             ->route('crises.index')
             ->with('success', 'Crisis deleted successfully.');
+    }
+
+    public function show(Crisis $crisis)
+    {
+        return view('crises.show', compact('crisis'));
+    }
+
+
+
+    // Show crises analytics
+    public function crisisAnalytics()
+    {
+        $crises = Crisis::with('donations')->get();
+        $donors  = Donor::orderBy('name')->get();
+
+        return view('crises.analytics', compact('crises', 'donors'));
     }
 }

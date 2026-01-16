@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use Log;
 use App\Models\Mold;
 use App\Models\User;
+use App\Models\Donor;
+use App\Models\Crisis;
 use App\Models\Variant;
 use App\Models\Customer;
 use App\Models\Purchase;
@@ -117,16 +120,16 @@ class AdminController extends Controller
     public function dashboard(Request $request)
     {
    
-        $totalCustomers = Customer::where('status', 1)->where('is_otp_verified', 1)->count();
-        $totalBusinesses = GmeBusinessForm::count();
-        $approvedBusinesses = GmeBusinessForm::where('status', 'approved')->count();
+        $totalCrisis = Crisis::count();
+        $totalDonor = Donor::count();
+        $totalCategory = Category::count();
 
     
 
         return view('admin.dashboard', compact(
-            'totalBusinesses',
-            'totalCustomers',
-            'approvedBusinesses'
+            'totalCrisis',
+            'totalDonor',
+            'totalCategory'
         ));
     }
 

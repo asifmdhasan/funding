@@ -5,9 +5,8 @@
     <div class="col-md-6">
 
         <div class="card shadow-sm">
-            <div class="card-header bg-primary text-white">
+            <div class="card-header">
                 <h5 class="mb-0">
-                    <i class="fa fa-tags me-2"></i>
                     Create Crisis Category
                 </h5>
             </div>
@@ -36,7 +35,7 @@
                         @enderror
                     </div>
                     {{-- Image --}}
-                    <div class="mb-3">
+                    {{-- <div class="mb-3">
                         <label class="form-label fw-semibold">
                             Category Image
                         </label>
@@ -44,7 +43,6 @@
                         <p class="text-muted small">
                             Recommended size: 160 × 100 px
                         </p>
-                        {{-- Image preview --}}
                         <div class="mb-2">
                             <img id="imagePreview"
                                 src="{{ old('image') ? asset('assets/' . old('image')) : '' }}"
@@ -63,7 +61,7 @@
                                 {{ $message }}
                             </div>
                         @enderror
-                    </div>
+                    </div> --}}
 
 
                     {{-- Status --}}
@@ -84,14 +82,11 @@
 
                     {{-- Actions --}}
                     <div class="d-flex justify-content-end gap-2 mt-4">
-                        <a href="{{ route('categories.index') }}"
-                           class="btn btn-outline-secondary">
-                            <i class="fa fa-arrow-left me-1"></i> Cancel
-                        </a>
+                        
 
                         <button type="submit"
                                 class="btn btn-primary">
-                            <i class="fa fa-save me-1"></i> Save
+                             Save
                         </button>
                     </div>
 

@@ -5,9 +5,8 @@
     <div class="col-md-8">
 
         <div class="card shadow-sm">
-            <div class="card-header bg-warning text-white">
+            <div class="card-header">
                 <h5 class="mb-0">
-                    <i class="fa fa-edit me-2"></i>
                     Edit Crisis
                 </h5>
             </div>
@@ -56,15 +55,7 @@
                         @enderror
                     </div>
 
-                    {{-- Description --}}
-                    <div class="mb-3">
-                        <label class="form-label fw-semibold">
-                            Description
-                        </label>
-                        <textarea name="description"
-                                  rows="4"
-                                  class="form-control">{{ old('description', $crisis->description) }}</textarea>
-                    </div>
+                    
 
                     {{-- City --}}
                     <div class="mb-3">
@@ -93,17 +84,23 @@
                         @enderror
                     </div>
 
+                    {{-- Description --}}
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">
+                            Description
+                        </label>
+                        <textarea name="description"
+                                  rows="4"
+                                  class="form-control">{{ old('description', $crisis->description) }}</textarea>
+                    </div>
+
 
 
                     {{-- Actions --}}
                     <div class="d-flex justify-content-end gap-2 mt-4">
-                        <a href="{{ route('crises.index') }}"
-                           class="btn btn-outline-secondary">
-                            <i class="fa fa-arrow-left me-1"></i> Cancel
-                        </a>
 
                         <button type="submit" class="btn btn-warning">
-                            <i class="fa fa-save me-1"></i> Update
+                            Update
                         </button>
                     </div>
 

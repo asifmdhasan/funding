@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reset Password - GME Network</title>
+    <title>Reset Password - Crowed Funding Login System</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
 
