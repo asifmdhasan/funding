@@ -13,7 +13,7 @@
 
             <div class="card-body">
 
-                <form action="{{ route('crises.update', $crisis) }}" method="POST">
+                <form action="{{ route('crises.update', $crisis) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
 
@@ -81,6 +81,16 @@
 
                         @error('target_amount')
                             <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    {{-- Image --}}
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Image</label>
+                        <input type="file" name="image_url"
+                               class="form-control @error('image_url') is-invalid @enderror">
+                        @error('image_url')
+                        <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
 

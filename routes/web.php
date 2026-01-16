@@ -16,6 +16,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DonationController;
 use App\Http\Middleware\LoginAuthMiddleware;
 use App\Http\Controllers\AnalyticsController;
+use App\Http\Controllers\ReportPdfController;
 use App\Http\Controllers\CrisisViewController;
 use App\Http\Controllers\GmeBusinessController;
 use App\Http\Controllers\CustomerAuthController;
@@ -27,7 +28,8 @@ use App\Http\Controllers\FrontendGmeBusinessController;
 
 
 // FRONTEND
-Route::get('/', [CrisisViewController::class, 'index'])->name('crisis.list');
+Route::get('/', [CrisisViewController::class, 'frontend'])->name('frontend.view');
+Route::get('/crisis-list', [CrisisViewController::class, 'index'])->name('crisis.list');
 Route::get('/crisis/{id}', [CrisisViewController::class, 'show'])->name('crisis.show');
 //store donation
 Route::post('/crisis/{id}/donate', [CrisisViewController::class, 'donate'])->name('crisis.donate');
@@ -62,6 +64,10 @@ Route::middleware('auth:donor')->group(function () {
     // Logout
     Route::post('/donor/logout', [DonorController::class, 'logout'])
         ->name('donor.logout');
+
+    Route::get('/donor/donations/print', [DonorController::class, 'printDonations'])
+    ->name('donor.donations.print');
+
 });
 
 
@@ -75,7 +81,16 @@ Route::middleware([
 
 
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
-        Route::get('/crises/report', [CrisisController::class, 'crisisAnalytics'])->name('crises.analytics');
+    Route::get('/crises/report', [CrisisController::class, 'crisisAnalytics'])->name('crises.analytics');
+    Route::get('/crises/analytics/{crisis}', [CrisisController::class, 'crisisAnalyticsDetails'])->name('crises.analytics.details');
+    Route::get('/crises/donor-report', [CrisisController::class, 'donorReport'])->name('crises.donor.report');
+    Route::get('/crises/donor-report/{donor}', [CrisisController::class, 'donorReportDetails'])->name('crises.donor.report.details');
+
+    Route::get('/reports/crisis/{crisis}/print', [ReportPdfController::class, 'crisisReport'])
+    ->name('reports.crisis.print');
+
+    Route::get('/reports/donor/{donor}/print', [ReportPdfController::class, 'donorReport'])
+    ->name('reports.donor.print');
 
     Route::resource('categories', CategoryController::class);
     Route::resource('crises', CrisisController::class);
@@ -276,7 +291,7 @@ Route::middleware([
         Route::post('/store', [UserController::class, 'store'])->name('user.store');
         Route::get('/edit/{user}', [UserController::class, 'edit'])->name('user.edit');
         Route::post('/update/{user}', [UserController::class, 'update'])->name('user.update');
-        // Route::delete('/delete/{user}', [UserController::class, 'destroy'])->name('user.destroy');
+        Route::delete('/delete/{user}', [UserController::class, 'destroy'])->name('user.destroy');
 
         // Route::get('settings', [UserController::class, 'userSettings'])->name('users.settings');
         Route::post('store/settings', [UserController::class, 'updateUserSettings'])->name('user.store-settings');

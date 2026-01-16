@@ -2,11 +2,55 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Donor;
 use App\Models\Crisis;
+use App\Models\Donation;
 use Illuminate\Http\Request;
 
 class CrisisViewController extends Controller
 {
+    // public function frontend()
+    // {
+    //     // Fetch featured crises (latest 6 or whatever limit you want)
+    //     $crises = Crisis::with('category')
+    //         ->latest()
+    //         ->take(6)
+    //         ->get();
+
+    //     // Statistics
+    //     $totalCrises = Crisis::count();
+    //     $totalDonors = Donor::count();
+    //     $totalFunds = Donation::sum('amount');
+
+    //     return view('frontend.index', compact(
+    //         'crises',
+    //         'totalCrises',
+    //         'totalDonors',
+    //         'totalFunds'
+    //     ));
+    // }
+    public function frontend()
+    {
+        // Featured crises
+        $crises = Crisis::with('category')
+            ->latest()
+            ->take(6)
+            ->get();
+
+        // Statistics
+        $totalCrises = Crisis::count();
+        $totalDonors = Donor::count();
+        $totalFunds  = Donation::where('status', 'success')->sum('amount');
+
+        return view('frontend.index', compact(
+            'crises',
+            'totalCrises',
+            'totalDonors',
+            'totalFunds'
+        ));
+    }
+
+
     public function index()
     {
         $crises = Crisis::with('category', 'donations')
@@ -19,13 +63,7 @@ class CrisisViewController extends Controller
     /**
      * Show single crisis details
      */
-    // public function show($id)
-    // {
-    //     $crisis = Crisis::with('category', 'donations')
-    //         ->findOrFail($id);
 
-    //     return view('frontend.crises.show', compact('crisis'));
-    // }
     public function show($id)
     {
         $crisis = Crisis::findOrFail($id);

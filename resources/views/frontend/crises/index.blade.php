@@ -33,11 +33,11 @@
                         </small>
 
                         <small class="text-muted">
-                            Colected: {{ round($percent, 2) }}%
+                            Collected: {{ round($percent, 2) }}%
                         </small>
 
                         <!-- View page link -->
-                        <a href="{{ route('crisis.show', $crisis->id) }}" class="text-decoration-none d-block mt-3 fw-semibold btn btn-primary">
+                        <a href="{{ route('crisis.show', $crisis->id) }}" class="text-decoration-none d-block mt-3 fw-semibold btn btn-dark">
                             View
                         </a>
 

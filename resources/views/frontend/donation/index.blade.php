@@ -3,11 +3,18 @@
 
 @section('content')
 <div class="container-fluid"  style="padding:5rem;">
+    <div>
+            {{-- <h4 class="fw-bold">Donor Details</h4> --}}
+            <div class="row justify-content-center">
+                <h4 class="fw-bold text-center">My Donations</h4> 
+            </div>
 
-    <div class="d-flex justify-content-center align-items-center mb-3">
-        <div class="row justify-content-center">
-<h4 class="fw-bold text-center">My Donations</h4>
-        </div>
+            <div class="text-center mb-3 mt-3">
+                <a href="{{ route('donor.donations.print') }}" target="_blank"
+                    class="btn btn-outline-primary">
+                    Print Details
+                </a>
+            </div>
         
     </div>
 
@@ -25,14 +32,13 @@
 
     <div class="card">
         <div class="card-body">
-            <table class="table table-bordered table-striped" id="donationsTable">
+            {{-- <table class="table table-bordered table-striped" id="donationsTable">
                 <thead class="table-light">
                     <tr>
                         <th>SL</th>
                         <th>Crisis Name</th>
                         <th>City</th>
                         <th>Amount</th>
-                        {{-- <th>Status</th> --}}
                         <th>Date</th>
                     </tr>
                 </thead>
@@ -52,17 +58,6 @@
                             <td class="fw-bold">
                                 ৳ {{ number_format($donation->amount, 2) }}
                             </td>
-
-                            {{-- <td>
-                                @if($donation->status === 'success')
-                                    <span class="badge bg-success">Success</span>
-                                @elseif($donation->status === 'pending')
-                                    <span class="badge bg-warning text-dark">Pending</span>
-                                @else
-                                    <span class="badge bg-danger">Failed</span>
-                                @endif
-                            </td> --}}
-
                             <td>
                                 {{ $donation->created_at->format('d M Y') }}
                             </td>
@@ -75,6 +70,43 @@
                         </tr>
                     @endforelse
                 </tbody>
+            </table> --}}
+            <table class="table table-bordered table-striped" id="donationsTable">
+                <thead class="table-light">
+                    <tr>
+                        <th>Date</th>
+                        <th>Crisis Name</th>
+                        <th>City</th>
+                        <th>Amount</th>
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($donations as $donation)
+                        <tr>
+                            <td>{{ $donation->created_at->format('d M Y') }}</td>
+                            <td>{{ $donation->crisis->title ?? 'N/A' }}</td>
+                            <td>{{ $donation->crisis->city ?? '-' }}</td>
+                            <td>{{ number_format($donation->amount, 2) }} BDT</td>
+                            
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="5" class="text-center text-muted">No donations found.</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+
+                {{-- Total Row --}}
+                <tfoot>
+                    <tr class="table-light fw-bold">
+                        <td colspan="3" class="text-end">Total</td>
+                        <td>
+                            {{ number_format($donations->sum('amount'), 2) }} BDT
+                        </td>
+                    
+                    </tr>
+                </tfoot>
             </table>
         </div>
     </div>

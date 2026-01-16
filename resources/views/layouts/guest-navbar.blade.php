@@ -3,7 +3,7 @@
     <div class="container text-center py-3">
 
         <!-- Brand -->
-        <a href="{{ route('crisis.list') }}" class="d-inline-block mb-2 fw-bold text-dark fs-4 text-decoration-none">
+        <a href="{{ route('frontend.view') }}" class="d-inline-block mb-2 fw-bold text-dark fs-4 text-decoration-none">
             Crowd Funding
         </a>
 

@@ -4,9 +4,9 @@
 <div class="container-fluid">
 
     <div class="d-flex justify-content-between mb-3">
-        <h4 class="fw-bold">Users</h4>
+        <h4 class="fw-bold">Admins</h4>
         <a href="{{ route('user.create') }}" class="btn btn-primary">
-            Add User
+            Add Admin
         </a>
     </div>
 
@@ -44,12 +44,12 @@
                         <td>
                             <a href="{{ route('user.edit', $user) }}" class="btn btn-sm btn-warning">Edit</a>
 
-                            {{-- <form action="{{ route('user.destroy', $user) }}" method="POST" class="d-inline"
-                                  onsubmit="return confirm('Delete this user?');">
+                            <form action="{{ route('user.destroy', $user) }}" method="POST" class="d-inline"
+                                  onsubmit="return confirm('Delete this admin?');">
                                 @csrf
                                 @method('DELETE')
                                 <button class="btn btn-sm btn-danger">Delete</button>
-                            </form> --}}
+                            </form>
                         </td>
                     </tr>
                 @endforeach

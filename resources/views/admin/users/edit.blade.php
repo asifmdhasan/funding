@@ -7,7 +7,7 @@
         <div class="card shadow-sm">
             <div class="card-header">
                 <h5 class="mb-0">
-                    Edit User
+                    Edit Admin
                 </h5>
             </div>
 
@@ -15,7 +15,7 @@
 
                 <form action="{{ route('user.update', $user) }}" method="POST">
                     @csrf
-                    @method('PUT')
+                    
                     <input type="hidden" name="role_id" value="2">
                     <input type="hidden" name="notifications_enabled" value="1">
                     {{-- Name --}}

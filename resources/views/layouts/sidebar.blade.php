@@ -18,12 +18,42 @@
                 </a>
             </li>
 
-            <!-- show analytics -->
-            <li class="nav-item">
-                <a href="{{ route('crises.analytics') }}" 
-                   class="nav-link text-white fw-bold {{ request()->routeIs('crises.analytics') ? 'active' : '' }}">
-                    <i class="fa fa-chart-bar me-2"></i> Crises Report
+            
+            
+
+            
+            <li class="nav-item mt-3">
+                <a class="nav-link text-white d-flex justify-content-between align-items-center" 
+                   data-bs-toggle="collapse" 
+                   href="#reportsMenu" 
+                   role="button" 
+                   aria-expanded="{{ request()->routeIs('reports.*') ? 'true' : 'false' }}" 
+                   aria-controls="reportsMenu"
+                   style="cursor: pointer;">
+                    <span>
+                        <i class="fa fa-folder me-2"></i>
+                        <span class="text-uppercase small fw-bold">Report</span>
+                    </span>
+                    <i class="fa fa-chevron-down"></i>
                 </a>
+                <div class="collapse {{ request()->routeIs('reports.*') ? 'show' : '' }}" id="reportsMenu">
+                    <ul class="nav flex-column ms-3">
+                        <!-- show analytics -->
+                        <li class="nav-item">
+                            <a href="{{ route('crises.analytics') }}" 
+                            class="nav-link text-white fw-bold {{ request()->routeIs('crises.analytics') ? 'active' : '' }}">
+                                <i class="fa fa-chart-bar me-2"></i> Crises Report
+                            </a>
+                        </li>
+                        <!-- Donor Report -->
+                        <li class="nav-item">
+                            <a href="{{ route('crises.donor.report') }}" 
+                            class="nav-link text-white fw-bold {{ request()->routeIs('crises.donor.report') ? 'active' : '' }}">
+                                <i class="fa fa-users me-2"></i> Donor Report
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             </li>
 
             {{-- <li class="nav-item">
@@ -82,7 +112,7 @@
                         <li class="nav-item">
                             <a href="{{ route('categories.index') }}" 
                                class="nav-link text-white {{ request()->routeIs('categories.index') ? 'active' : '' }}">
-                                <i class="fa fa-list me-2"></i> Category Index
+                                <i class="fa fa-list me-2"></i> Category List
                             </a>
                         </li>
                         <li class="nav-item">
@@ -115,7 +145,7 @@
                         <li class="nav-item">
                             <a href="{{ route('crises.index') }}" 
                                class="nav-link text-white {{ request()->routeIs('crises.index') ? 'active' : '' }}">
-                                <i class="fa fa-list me-2"></i> Crises Index
+                                <i class="fa fa-list me-2"></i> Crises List
                             </a>
                         </li>
                         <li class="nav-item">
@@ -172,7 +202,7 @@
                 style="cursor: pointer;">
                     <span>
                         <i class="fa fa-users me-2"></i>
-                        <span class="text-uppercase small fw-bold">Users</span>
+                        <span class="text-uppercase small fw-bold">Admins</span>
                     </span>
                     <i class="fa fa-chevron-down"></i>
                 </a>
@@ -182,13 +212,13 @@
                         <li class="nav-item">
                             <a href="{{ route('user.index') }}" 
                             class="nav-link text-white {{ request()->routeIs('user.index') ? 'active' : '' }}">
-                                <i class="fa fa-list me-2"></i> User Index
+                                <i class="fa fa-list me-2"></i> Admin List
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="{{ route('user.create') }}" 
                             class="nav-link text-white {{ request()->routeIs('user.create') ? 'active' : '' }}">
-                                <i class="fa fa-plus-circle me-2"></i> User Create
+                                <i class="fa fa-plus-circle me-2"></i> Create Admin
                             </a>
                         </li>
                     </ul>

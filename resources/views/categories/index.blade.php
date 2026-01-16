@@ -4,7 +4,7 @@
 <div class="container-fluid">
 
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h4 class="fw-bold">Crisis Categories</h4>
+        <h4 class="fw-bold">Categories</h4>
         <a href="{{ route('categories.create') }}"
            class="btn btn-primary">
             Add Category
