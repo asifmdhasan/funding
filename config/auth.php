@@ -53,6 +53,10 @@ return [
             'driver' => 'session',
             'provider' => 'donors',
         ],
+        'helpseeker' => [
+            'driver' => 'session', 
+            'provider' => 'helpseekers',
+        ],
     ],
 
     /*
@@ -90,6 +94,10 @@ return [
         'donors' => [
             'driver' => 'eloquent',
             'model' => App\Models\Donor::class,
+        ],
+        'helpseekers' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Helpseeker::class,
         ],
     ],
 

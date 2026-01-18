@@ -17,4 +17,9 @@ class Donation extends Model
     {
         return $this->belongsTo(Donor::class);
     }
+
+    public function helpseeker()
+    {
+        return $this->belongsTo(Helpseeker::class);
+    }
 }

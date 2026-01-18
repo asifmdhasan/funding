@@ -18,8 +18,10 @@ use App\Http\Middleware\LoginAuthMiddleware;
 use App\Http\Controllers\AnalyticsController;
 use App\Http\Controllers\ReportPdfController;
 use App\Http\Controllers\CrisisViewController;
+use App\Http\Controllers\HelpseekerController;
 use App\Http\Controllers\GmeBusinessController;
 use App\Http\Controllers\CustomerAuthController;
+use App\Http\Controllers\HelpseekerPostController;
 use App\Http\Controllers\BusinessCategoryController;
 use App\Http\Controllers\GmeBusinessAdminController;
 use App\Http\Controllers\FrontendGmeBusinessController;
@@ -37,6 +39,12 @@ Route::post('/crisis/{id}/donate', [CrisisViewController::class, 'donate'])->nam
 Route::post('/donation/store', [DonationController::class, 'store'])->name('donation.store');
 
 
+//helpseeker.posts.public
+Route::get('/help-seeker/posts', [HelpseekerPostController::class, 'publicIndex'])->name('helpseeker.posts.public');
+//make this <a href="{{ route('helpseeker.posts.show', $post->id) }}"
+Route::get('/help-seeker/posts/{post}', [HelpseekerPostController::class, 'show'])->name('helpseeker.posts.show');
+//donation.store.helpseeker
+Route::post('/help-seeker/posts/{post}/donate', [HelpseekerPostController::class, 'helpDonate'])->name('helpseeker.posts.donate');
 // Donor Auth
 Route::get('/donor/register', [DonorController::class, 'register'])->name('donor.register');
 Route::post('/donor/register', [DonorController::class, 'store'])->name('donor.store');
@@ -73,6 +81,40 @@ Route::middleware('auth:donor')->group(function () {
 
 
 
+
+        Route::get('/helpseeker/register', [HelpseekerController::class, 'showRegisterForm'])->name('helpseeker.register');
+        Route::post('/helpseeker/register', [HelpseekerController::class, 'register'])->name('helpseeker.store');
+
+        Route::get('/helpseeker/login', [HelpseekerController::class, 'showLoginForm'])->name('helpseeker.login');
+        Route::post('/helpseeker/login', [HelpseekerController::class, 'login'])->name('helpseeker.authenticate');
+// Authenticated Helpseeker Routes
+    Route::middleware('auth:helpseeker')->group(function () {
+        Route::get('/helpseeker/dashboard', [HelpseekerController::class, 'dashboard'])->name('helpseeker.dashboard');
+        Route::get('/helpseeker/logout', [HelpseekerController::class, 'logout'])->name('helpseeker.logout');
+        Route::get('/helpseeker/profile', [HelpseekerController::class, 'edit'])->name('helpseeker.profile.edit');
+        Route::put('/helpseeker/profile', [HelpseekerController::class, 'update'])->name('helpseeker.profile.update');
+    
+        Route::get('posts', [HelpseekerPostController::class, 'index'])->name('helpseeker.posts.index');
+
+        // Separate create page
+        Route::get('posts/create', [HelpseekerPostController::class, 'create'])->name('helpseeker.posts.create');
+        Route::post('posts', [HelpseekerPostController::class, 'store'])->name('helpseeker.posts.store');
+
+        // Separate edit page
+        Route::get('posts/{post}/edit', [HelpseekerPostController::class, 'edit'])->name('helpseeker.posts.edit');
+        Route::put('posts/{post}', [HelpseekerPostController::class, 'update'])->name('helpseeker.posts.update');
+
+        // Separate delete confirmation page
+        Route::get('posts/{post}/delete', [HelpseekerPostController::class, 'delete'])->name('helpseeker.posts.delete');
+        Route::delete('posts/{post}', [HelpseekerPostController::class, 'destroy'])->name('helpseeker.posts.destroy');
+
+    
+        });
+
+
+
+
+
 Route::middleware([
     'setLocale',
     LoginAuthMiddleware::class,
@@ -96,6 +138,11 @@ Route::middleware([
     Route::resource('crises', CrisisController::class);
     //show crises analytics
 
+    // show showHelpseekerPosts index
+    Route::get('/helpseekerposts', [AdminController::class, 'showHelpseekerPosts'])->name('admin.helpseekerposts.index');
+
+    Route::post('/helpseekerposts/{post}/update-status', [AdminController::class, 'updateStatus'])
+    ->name('admin.helpseekerposts.update_status');
 
 });
 

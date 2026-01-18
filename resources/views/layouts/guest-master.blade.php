@@ -583,9 +583,9 @@
     }
 }
 
-    .join-network:hover {
-        color: #fff;
-    }
+.join-network:hover {
+    color: #fff;
+}
 </style>
 </head>
 

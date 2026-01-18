@@ -158,6 +158,35 @@
                 </div>
             </li>
 
+
+
+            {{-- //create helpseekerposts management menu --}}
+            <li class="nav-item mt-3">
+                <a class="nav-link text-white d-flex justify-content-between align-items-center" 
+                   data-bs-toggle="collapse" 
+                   href="#helpseekerPostsMenu" 
+                   role="button" 
+                   aria-expanded="{{ request()->routeIs('admin.helpseekerposts.*') ? 'true' : 'false' }}" 
+                   aria-controls="helpseekerPostsMenu"
+                   style="cursor: pointer;">
+                    <span>
+                        <i class="fa fa-file-alt me-2"></i>
+                        <span class="text-uppercase small fw-bold">Helpseeker Posts</span>
+                    </span>
+                    <i class="fa fa-chevron-down"></i>
+                </a>
+                <div class="collapse {{ request()->routeIs('admin.helpseekerposts.*') ? 'show' : '' }}" id="helpseekerPostsMenu">
+                    <ul class="nav flex-column ms-3">
+                        <li class="nav-item">
+                            <a href="{{ route('admin.helpseekerposts.index') }}" 
+                               class="nav-link text-white {{ request()->routeIs('admin.helpseekerposts.index') ? 'active' : '' }}">
+                                <i class="fa fa-list me-2"></i> Helpseeker Posts List
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+
             <!-- User Channel Dropdown (Commented) -->
             {{-- <li class="nav-item mt-3">
                 <a class="nav-link text-white d-flex justify-content-between align-items-center" 

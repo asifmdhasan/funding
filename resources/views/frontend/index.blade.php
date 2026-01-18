@@ -107,5 +107,57 @@
     </div>
 </section>
 
+{{-- ================= URGENT Help Posts ================= --}}
+<section class="py-5">
+    <div class="container">
+        <h2 class="fw-bold mb-4">Help Posts!</h2>
+
+        <div class="row">
+            @foreach($posts as $post)
+                @php
+                    $raised = \App\Models\Donation::where('helpseeker_post_id', $post->id)
+                                ->where('status', 'success')
+                                ->sum('amount');
+
+                    $percent = $post->required_amount > 0
+                        ? ($raised / $post->required_amount) * 100
+                        : 0;
+                @endphp
+
+                <div class="col-md-4 mb-4">
+                    <div class="card border-0 shadow-sm h-100">
+
+                        <div class="card-body">
+                            <small class="text-muted">
+                                By {{ $post->helpseeker->name }}
+                            </small>
+
+                            <h5 class="fw-bold mt-2">
+                                {{ $post->title }}
+                            </h5>
+
+                            <div class="progress my-2">
+                                <div class="progress-bar bg-warning" role="progressbar"
+                                     style="width: {{ min($percent,100) }}%; background: Red;">
+                                </div>
+                            </div>
+
+                            <p class="small mb-1">
+                                {{ number_format($raised) }} BDT
+                                raised of {{ number_format($post->required_amount) }} BDT
+                            </p>
+
+                            <a href="{{ route('donor.register') }}"
+                               class="btn btn-success btn-sm mt-2" ">
+                                Donate Now
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    </div>
+</section>
+
 
 @endsection

@@ -6,6 +6,7 @@ use App\Models\Donor;
 use App\Models\Crisis;
 use App\Models\Donation;
 use Illuminate\Http\Request;
+use App\Models\HelpseekerPost;
 
 class CrisisViewController extends Controller
 {
@@ -36,17 +37,25 @@ class CrisisViewController extends Controller
             ->latest()
             ->take(6)
             ->get();
+        $posts = HelpseekerPost::with(['helpseeker', 'donations'])
+            ->where('status', 'approved')
+            ->latest()
+            ->take(6)
+            ->get();
 
         // Statistics
         $totalCrises = Crisis::count();
         $totalDonors = Donor::count();
         $totalFunds  = Donation::where('status', 'success')->sum('amount');
+        $totalPosts = HelpseekerPost::where('status', 'approved')->count();
 
         return view('frontend.index', compact(
             'crises',
             'totalCrises',
             'totalDonors',
-            'totalFunds'
+            'totalFunds',
+            'totalPosts',
+            'posts'
         ));
     }
 
@@ -55,9 +64,14 @@ class CrisisViewController extends Controller
     {
         $crises = Crisis::with('category', 'donations')
             ->latest()
+            ->take(6)
+            ->get();
+        $posts = HelpseekerPost::with(['helpseeker', 'donations'])
+            ->latest()
+            ->take(6)
             ->get();
 
-        return view('frontend.crises.index', compact('crises'));
+        return view('frontend.crises.index', compact('crises', 'posts'));
     }
 
     /**
