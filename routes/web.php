@@ -102,8 +102,8 @@ Route::middleware('auth:donor')->group(function () {
 
     Route::get('/donor/donations/print', [DonorController::class, 'printDonations'])
     ->name('donor.donations.print');
-    // Route::get('/donations/print-help', [DonorController::class, 'printHelpPostDonations'])
-    // ->name('donor.donations.print.help');
+    Route::get('/donations/print-help', [DonorController::class, 'printHelpPostDonations'])
+    ->name('donor.donations.print.help');
 
 });
 

@@ -80,7 +80,7 @@ class AdminController extends Controller
     //show helpseekerposts
     public function showHelpseekerPosts()
     {
-        $posts = HelpseekerPost::all();
+        $posts = HelpseekerPost::with('Helpseeker')->get();
         return view('admin.helpseekerposts.index', compact('posts'));
     }
 
