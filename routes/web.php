@@ -24,8 +24,31 @@ use App\Http\Controllers\CustomerAuthController;
 use App\Http\Controllers\HelpseekerPostController;
 use App\Http\Controllers\BusinessCategoryController;
 use App\Http\Controllers\GmeBusinessAdminController;
+use App\Http\Controllers\SslCommerzPaymentController;
 use App\Http\Controllers\FrontendGmeBusinessController;
 use App\Http\Controllers\HelpseekerPostReportController;
+
+
+
+
+Route::get('/payment/ssl/pay/{donation}', [SslCommerzPaymentController::class, 'pay'])
+    ->name('payment.ssl.pay');
+
+// User redirects
+Route::get('/payment/ssl/success', [SslCommerzPaymentController::class, 'success']);
+Route::get('/payment/ssl/fail', [SslCommerzPaymentController::class, 'fail']);
+Route::get('/payment/ssl/cancel', [SslCommerzPaymentController::class, 'cancel']);
+
+// IPN / Server POST callbacks
+Route::post('/payment/ssl/success-ipn', [SslCommerzPaymentController::class, 'successIpn']);
+Route::post('/payment/ssl/fail-ipn', [SslCommerzPaymentController::class, 'failIpn']);
+Route::post('/payment/ssl/cancel-ipn', [SslCommerzPaymentController::class, 'cancelIpn']);
+
+
+
+
+
+
 
 
 

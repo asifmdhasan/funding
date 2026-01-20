@@ -36,15 +36,16 @@ class DonationController extends Controller
             'donor_id'      => auth('donor')->id(),
             'amount'        => $request->amount,
             'transaction_id'=> Str::uuid(),
-            'status'        => 'success',
+            'status'        => 'pending',
         ]);
+        return redirect()->route('payment.ssl.pay', $donation->id);
     
 
         // 👉 SSLCommerz redirect ekhane hobe
         // $this->sslPayment($donation);
 
         // return redirect()->route('payment.process', $donation->id);
-        return redirect()->route('donor.donations')->with('success', 'Donation successfully completed.');
+        // return redirect()->route('donor.donations')->with('success', 'Donation successfully completed.');
     }
 
     public function helppostStore(Request $request)

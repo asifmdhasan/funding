@@ -15,5 +15,8 @@ class VerifyCsrfToken extends Middleware
      */
     protected $except = [
         'api/*',  // Exclude all API routes from CSRF protection
+        'payment/ssl/success-ipn',
+    'payment/ssl/fail-ipn',
+    'payment/ssl/cancel-ipn',
     ];
 }
