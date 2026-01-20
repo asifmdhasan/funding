@@ -138,7 +138,7 @@
 
         <div class="card shadow-sm">
             <div class="card-header fw-semibold">
-                Helpseeker Information
+                Helpseeker Post Information
             </div>
             <div class="card-body">
                 
@@ -146,7 +146,7 @@
                 <!-- Post Title -->
                 <h3 class="mb-2">{{ $post->title }}</h3>
 
-                <p><strong>Name:</strong> {{ $post->helpseeker->name }}</p>
+                <p><strong>Helpseeker Name:</strong> {{ $post->helpseeker->name }}</p>
 
                 @if($post->helpseeker->email)
                     <p><strong>Email:</strong> {{ $post->helpseeker->email }}</p>
@@ -206,7 +206,7 @@
 
     </div>
 </div>
-```
+
 
 </div>
 
@@ -217,7 +217,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
 
-```
+
         <div class="modal-header">
             <h5 class="modal-title">
                 Donate to {{ $post->title }}
@@ -243,7 +243,7 @@
                     </div>
                 @endif
 
-                <form action="{{ route('donation.store.helpseeker', $post->id) }}"
+                <form action="{{ route('helpseeker.posts.donate', $post->id) }}"
                       method="POST">
                     @csrf
 
@@ -280,7 +280,6 @@
         </div>
     </div>
 </div>
-```
 
 </div>
 

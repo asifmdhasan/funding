@@ -52,6 +52,13 @@
                                 <i class="fa fa-users me-2"></i> Donor Report
                             </a>
                         </li>
+                        {{-- Helper post report --}}
+                        <li class="nav-item">
+                            <a href="{{ route('helpseekerposts.report') }}" 
+                            class="nav-link text-white fw-bold {{ request()->routeIs('helpseekerposts.report') ? 'active' : '' }}">                               
+                                <i class="fa fa-users me-2"></i> Helper Post Report
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </li>

@@ -10,18 +10,20 @@
         <!-- Menu Links -->
         <div class="d-flex justify-content-center flex-wrap gap-4 mt-2">
 
-            <a href="{{ route('crisis.list') }}" class="text-dark fw-semibold fs-5 text-decoration-none px-3 py-2 rounded hover-bg">
-                Crisis List
-            </a>
-            
-            <a href="{{ route('helpseeker.posts.public') }}" class="text-dark fw-semibold fs-5 text-decoration-none px-3 py-2 rounded hover-bg">
-                Help Posts
-            </a>
+
 
             {{-- DONOR SECTION --}}
             @auth('donor')
                 <a href="{{ route('donor.donations') }}" class="text-dark fw-semibold fs-5 text-decoration-none px-3 py-2 rounded hover-bg">
                     My Donations
+                </a>
+
+                <a href="{{ route('crisis.list') }}" class="text-dark fw-semibold fs-5 text-decoration-none px-3 py-2 rounded hover-bg">
+                        Crisis List
+                </a>
+                    
+                <a href="{{ route('helpseeker.posts.public') }}" class="text-dark fw-semibold fs-5 text-decoration-none px-3 py-2 rounded hover-bg">
+                    Help Posts
                 </a>
 
                 <div class="dropdown d-inline-block" style="padding-top:0.5rem;">
@@ -71,6 +73,15 @@
             {{-- GUEST SECTION --}}
             @guest('donor')
                 @guest('helpseeker')
+
+                    <a href="{{ route('crisis.list') }}" class="text-dark fw-semibold fs-5 text-decoration-none px-3 py-2 rounded hover-bg">
+                        Crisis List
+                    </a>
+                    
+                    <a href="{{ route('helpseeker.posts.public') }}" class="text-dark fw-semibold fs-5 text-decoration-none px-3 py-2 rounded hover-bg">
+                        Help Posts
+                    </a>
+
                     <a href="{{ route('donor.login') }}" class="text-dark fw-semibold fs-5 text-decoration-none px-3 py-2 rounded hover-bg">
                         Donor
                     </a>

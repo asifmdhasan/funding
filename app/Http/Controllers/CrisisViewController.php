@@ -66,12 +66,12 @@ class CrisisViewController extends Controller
             ->latest()
             ->take(6)
             ->get();
-        $posts = HelpseekerPost::with(['helpseeker', 'donations'])
-            ->latest()
-            ->take(6)
-            ->get();
+        // $posts = HelpseekerPost::with(['helpseeker', 'donations'])
+        //     ->latest()
+        //     ->take(6)
+        //     ->get();
 
-        return view('frontend.crises.index', compact('crises', 'posts'));
+        return view('frontend.crises.index', compact('crises'));
     }
 
     /**

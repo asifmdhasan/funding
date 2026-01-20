@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('donations', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('crisis_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('helpseeker_post_id')->nullable()->constrained()->nullOnDelete();
+            $table->foreignId('crisis_id')->nullable()->constrained()->nullOnDelete();
             $table->foreignId('donor_id')->constrained()->cascadeOnDelete();
             $table->decimal('amount', 12, 2);
             $table->string('transaction_id')->nullable();

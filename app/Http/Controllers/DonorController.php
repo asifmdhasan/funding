@@ -86,21 +86,44 @@ class DonorController extends Controller
         return redirect()->route('donor.profile')->with('success', 'Profile updated successfully');
     }
 
-    public function donations()
-    {
-        $donations = Donation::with('crisis')
-            ->where('donor_id', auth('donor')->id())
-            ->latest()
-            ->get();
+    // public function donations()
+    // {
+    //     $donations = Donation::with('crisis')
+    //         ->where('donor_id', auth('donor')->id())
+    //         ->latest()
+    //         ->get();
 
-        return view('frontend.donation.index', compact('donations'));
+    //     return view('frontend.donation.index', compact('donations'));
+    // }
+    public function donations(Request $request)
+    {
+        $type = $request->get('type', 'crisis'); // default crisis
+
+        $query = Donation::where('donor_id', auth('donor')->id())
+            ->where('status', 'success')
+            ->latest();
+
+        if ($type === 'help') {
+            $query->whereNotNull('helpseeker_post_id')
+                ->with(['helpseekerPost.helpseeker']);
+        } else {
+            $query->whereNotNull('crisis_id')
+                ->with('crisis');
+        }
+
+        $donations = $query->get();
+
+        return view('frontend.donation.index', compact('donations', 'type'));
     }
+
 
     public function printDonations()
     {
         $donor = auth('donor')->user();
         $donations = Donation::with('crisis')
             ->where('donor_id', $donor->id)
+            ->whereNotNull('crisis_id')
+            ->where('status', 'success')
             ->latest()
             ->get();
 
@@ -124,6 +147,37 @@ class DonorController extends Controller
         return $mpdf->Output("My_Donations_{$donor->name}.pdf", 'I');
         // return $mpdf->Output("My_Donations_{$donor->name}.pdf", 'D');
     }
+    public function printHelpPostDonations()
+    {
+        $donor = auth('donor')->user();
+
+        $donations = Donation::with(['helpseekerPost.helpseeker'])
+            ->where('donor_id', $donor->id)
+            ->whereNotNull('helpseeker_post_id')
+            ->where('status', 'success')
+            ->latest()
+            ->get();
+
+        $totalAmount = $donations->sum('amount');
+
+        // Load Blade view as HTML
+        $html = view('frontend.donation.pdf-help', compact('donor', 'donations', 'totalAmount'))->render();
+
+        // Create PDF
+        $mpdf = new \Mpdf\Mpdf([
+            'format' => 'A4',
+            'margin_left' => 10,
+            'margin_right' => 10,
+            'margin_top' => 10,
+            'margin_bottom' => 10,
+        ]);
+
+        $mpdf->WriteHTML($html);
+
+        // Output PDF in browser
+        return $mpdf->Output("My_HelpPost_Donations_{$donor->name}.pdf", 'I');
+    }
+
 
     
 

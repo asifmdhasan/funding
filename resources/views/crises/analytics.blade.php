@@ -52,15 +52,20 @@
                 <tbody>
                     @forelse($crises as $row)
                         <tr>
-                            <td>{{ $row->crisis->title }}</td>
-                            <td>{{ $row->crisis->category->name ?? 'N/A' }}</td>
-                            <td>৳ {{ number_format($row->total_amount, 2) }}</td>
+                            <td>{{ $row->crisis->title ?? '' }}</td>
+                            <td>{{ $row->crisis->category->name ?? '' }}</td>
+                            <td> {{ number_format($row->total_amount, 2) }} BDT</td>
                             <td>
-                                <a href="{{ route('crises.analytics.details', $row->crisis_id) }}"
-                                   class="btn btn-sm btn-primary">
-                                    View
-                                </a>
+                                @if($row->crisis_id)
+                                    <a href="{{ route('crises.analytics.details', ['crisis' => $row->crisis_id]) }}"
+                                    class="btn btn-sm btn-primary">
+                                        View
+                                    </a>
+                                @else
+                                    <span class="text-muted">N/A</span>
+                                @endif
                             </td>
+
                         </tr>
                     @empty
                         <tr>

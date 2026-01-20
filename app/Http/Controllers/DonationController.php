@@ -6,6 +6,7 @@ use App\Models\Crisis;
 use App\Models\Donation;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Models\HelpseekerPost;
 
 class DonationController extends Controller
 {
@@ -45,6 +46,42 @@ class DonationController extends Controller
         // return redirect()->route('payment.process', $donation->id);
         return redirect()->route('donor.donations')->with('success', 'Donation successfully completed.');
     }
+
+    public function helppostStore(Request $request)
+    {
+        $request->validate([
+            'helpseeker_post_id' => 'required|exists:helpseeker_posts,id',
+            'amount'             => 'required|numeric|min:1',
+        ]);
+
+        // Find the Help Post
+        $post = HelpseekerPost::findOrFail($request->helpseeker_post_id);
+
+        // Total collected amount for this post
+        $totalCollected = $post->donations()
+            ->where('status', 'success')
+            ->sum('amount');
+
+        // Check if donation exceeds required_amount
+        if (($totalCollected + $request->amount) > $post->required_amount) {
+            return back()->with('error', 'Donation exceeds the required amount for this post.');
+        }
+
+        // Create donation
+        $donation = Donation::create([
+            'helpseeker_post_id' => $post->id,
+            'donor_id'           => auth('donor')->id(),
+            'amount'             => $request->amount,
+            'transaction_id'     => Str::uuid(),
+            'status'             => 'success',
+        ]);
+
+        // Optionally: redirect to payment process if you use SSLCommerz
+        // $this->sslPayment($donation);
+
+        return redirect()->route('donor.donations')->with('success', 'Donation successfully completed.');
+    }
+
 
     //paymentSuccess
     public function paymentSuccess()

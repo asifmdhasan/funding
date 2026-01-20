@@ -49,7 +49,7 @@
         @endforeach
     </div>
     <br>
-    <div class="row justify-content-center">
+    {{-- <div class="row justify-content-center">
         <h3 class="mb-4 text-center fw-bold">Latest Posts List</h3>
         @foreach($posts as $post)
             @php
@@ -87,15 +87,12 @@
                             View
                         </a>
 
-                        {{-- <a href="{{ route('donor.register') }}"
-                           class="btn btn-success btn-sm mt-2" ">
-                            Donate Now
-                        </a> --}}
+
                     </div>
                 </div>
             </div>
         @endforeach
 
-    </div>
+    </div> --}}
 </div>
 @endsection

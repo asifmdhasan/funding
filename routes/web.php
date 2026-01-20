@@ -25,6 +25,7 @@ use App\Http\Controllers\HelpseekerPostController;
 use App\Http\Controllers\BusinessCategoryController;
 use App\Http\Controllers\GmeBusinessAdminController;
 use App\Http\Controllers\FrontendGmeBusinessController;
+use App\Http\Controllers\HelpseekerPostReportController;
 
 
 
@@ -38,13 +39,16 @@ Route::post('/crisis/{id}/donate', [CrisisViewController::class, 'donate'])->nam
 //Donation Amount
 Route::post('/donation/store', [DonationController::class, 'store'])->name('donation.store');
 
+//helppostStore
+Route::post('/donation/helppost/store', [DonationController::class, 'helppostStore'])->name('helpseeker.posts.donate');
+
 
 //helpseeker.posts.public
 Route::get('/help-seeker/posts', [HelpseekerPostController::class, 'publicIndex'])->name('helpseeker.posts.public');
 //make this <a href="{{ route('helpseeker.posts.show', $post->id) }}"
 Route::get('/help-seeker/posts/{post}', [HelpseekerPostController::class, 'show'])->name('helpseeker.posts.show');
 //donation.store.helpseeker
-Route::post('/help-seeker/posts/{post}/donate', [HelpseekerPostController::class, 'helpDonate'])->name('helpseeker.posts.donate');
+// Route::post('/help-seeker/posts/{post}/donate', [HelpseekerPostController::class, 'helpDonate'])->name('helpseeker.posts.donate');
 // Donor Auth
 Route::get('/donor/register', [DonorController::class, 'register'])->name('donor.register');
 Route::post('/donor/register', [DonorController::class, 'store'])->name('donor.store');
@@ -75,6 +79,8 @@ Route::middleware('auth:donor')->group(function () {
 
     Route::get('/donor/donations/print', [DonorController::class, 'printDonations'])
     ->name('donor.donations.print');
+    // Route::get('/donations/print-help', [DonorController::class, 'printHelpPostDonations'])
+    // ->name('donor.donations.print.help');
 
 });
 
@@ -91,10 +97,15 @@ Route::middleware('auth:donor')->group(function () {
     Route::middleware('auth:helpseeker')->group(function () {
         Route::get('/helpseeker/dashboard', [HelpseekerController::class, 'dashboard'])->name('helpseeker.dashboard');
         Route::get('/helpseeker/logout', [HelpseekerController::class, 'logout'])->name('helpseeker.logout');
-        Route::get('/helpseeker/profile', [HelpseekerController::class, 'edit'])->name('helpseeker.profile.edit');
-        Route::put('/helpseeker/profile', [HelpseekerController::class, 'update'])->name('helpseeker.profile.update');
+        Route::get('/helpseeker/profile', [HelpseekerController::class, 'profile'])->name('helpseeker.profile.edit');
+        Route::put('/helpseeker/profile', [HelpseekerController::class, 'profileUpdate'])->name('helpseeker.profile.update');
     
         Route::get('posts', [HelpseekerPostController::class, 'index'])->name('helpseeker.posts.index');
+        Route::get('posts/{post}/donations', [HelpseekerPostController::class, 'donations'])->name('helpseeker.posts.donations');
+        Route::get('posts/{post}/donations/print', [HelpseekerPostController::class, 'printDonations'])->name('helpseeker.posts.donations.print');
+
+
+
 
         // Separate create page
         Route::get('posts/create', [HelpseekerPostController::class, 'create'])->name('helpseeker.posts.create');
@@ -143,6 +154,21 @@ Route::middleware([
 
     Route::post('/helpseekerposts/{post}/update-status', [AdminController::class, 'updateStatus'])
     ->name('admin.helpseekerposts.update_status');
+
+
+
+
+
+    // Helpseeker Post Reports
+Route::get('/helpseeker-posts/report', [HelpseekerPostReportController::class, 'index'])
+    ->name('helpseekerposts.report');
+
+Route::get('/helpseeker-posts/report/{post}', [HelpseekerPostReportController::class, 'details'])
+    ->name('helpseekerposts.report.details');
+
+Route::get('/helpseeker-posts/report/{post}/print', [HelpseekerPostReportController::class, 'print'])
+    ->name('helpseekerposts.report.print');
+
 
 });
 

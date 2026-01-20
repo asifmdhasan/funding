@@ -51,7 +51,7 @@
                     @forelse($donors as $row)
                         <tr>
                             <td>{{ $row->donor->name }}</td>
-                            <td>৳ {{ number_format($row->total_amount, 2) }}</td>
+                            <td> {{ number_format($row->total_amount, 2) }} BDT</td>
                             <td>
                                 <a href="{{ route('crises.donor.report.details', $row->donor_id) }}"
                                    class="btn btn-sm btn-primary">

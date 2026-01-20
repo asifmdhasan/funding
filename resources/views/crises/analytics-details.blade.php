@@ -16,7 +16,7 @@
         <div class="card-body">
             <p><strong>Crisis:</strong> {{ $crisis->title }}</p>
             <p><strong>Category:</strong> {{ $crisis->category->name ?? 'N/A' }}</p>
-            <p><strong>Total Collected:</strong> ৳ {{ number_format($totalAmount, 2) }}</p>
+            <p><strong>Total Collected:</strong> {{ number_format($totalAmount, 2) }} BDT</p>
         </div>
     </div>
 
@@ -26,24 +26,26 @@
             <table class="table table-bordered">
                 <thead class="table-light">
                     <tr>
+                        <th>Date</th>
                         <th>Donor</th>
                         <th>Amount</th>
-                        <th>Date</th>
+                        
                     </tr>
                 </thead>
                 <tbody>
                     @foreach($donations as $row)
                         <tr>
-                            <td>{{ $row->donor->name }}</td>
-                            <td>৳ {{ number_format($row->total_amount, 2) }}</td>
                             <td>{{ \Carbon\Carbon::parse($row->last_donation_date)->format('d M Y') }}</td>
+                            <td>{{ $row->donor->name }}</td>
+                            <td>{{ number_format($row->total_amount, 2) }} BDT</td>
+                            
                         </tr>
                     @endforeach
                     {{-- Total Row --}}
                     <tr class="total-row">
-                        <td colspan="1" style="text-align:right;font-weight:bold;">Total Amount</td>
+                        <td colspan="2" style="text-align:right;font-weight:bold;">Total Amount</td>
                         <td style="font-weight:bold;">{{ number_format($totalAmount, 2) }} BDT</td>
-                        <td></td>
+                        {{-- <td></td> --}}
                     </tr>
                 </tbody>
             </table>

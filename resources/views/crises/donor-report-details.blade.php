@@ -15,7 +15,7 @@
     <div class="card mb-3">
         <div class="card-body">
             <p><strong>Donor:</strong> {{ $donor->name }}</p>
-            <p><strong>Total Donated:</strong> ৳ {{ number_format($totalAmount, 2) }}</p>
+            <p><strong>Total Donated:</strong> {{ number_format($totalAmount, 2) }} BDT</p>
         </div>
     </div>
 
@@ -26,24 +26,26 @@
             <table class="table table-bordered">
                 <thead class="table-light">
                     <tr>
+                        <th>Date</th>
                         <th>Crisis</th>
                         <th>Category</th>
                         <th>Amount</th>
-                        <th>Date</th>
+                        
                 </thead>
 
                 <tbody>
                     @foreach($donations as $row)
                         <tr>
+                            <td> {{ \Carbon\Carbon::parse($row->last_donation_date)->format('d M Y') }}</td>
                             <td>{{ $row->crisis->title }}</td>
                             <td>{{ $row->crisis->category->name ?? 'N/A' }}</td>
                             <td>{{ number_format($row->total_amount, 2) }} BDT</td>
-                            <td> {{ \Carbon\Carbon::parse($row->last_donation_date)->format('d M Y') }}</td>
+                            
                         </tr>
                     @endforeach
                     {{-- Total Row --}}
                     <tr class="total-row">
-                        <td colspan="2" style="text-align:right;font-weight:bold;">Total Amount</td>
+                        <td colspan="3" style="text-align:right;font-weight:bold;">Total Amount</td>
                         <td style="font-weight:bold;">{{ number_format($totalAmount, 2) }} BDT</td> 
                         <td></td>
                     </tr>

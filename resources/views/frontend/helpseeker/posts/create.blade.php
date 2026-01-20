@@ -13,7 +13,7 @@
 
             <div class="card-body">
 
-                <form method="POST" action="{{ route('helpseeker.posts.store') }}">
+                <form method="POST" action="{{ route('helpseeker.posts.store') }}" enctype="multipart/form-data">
                     @csrf
 
                     {{-- Title --}}
@@ -28,6 +28,21 @@
                         @error('title')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
+                    </div>
+
+                    {{-- File --}}
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Upload Document</label>
+                        <input type="file" name="file" class="form-control @error('file') is-invalid @enderror" accept="image/*,application/pdf,.doc,.docx" onchange="previewFile(this)">
+
+                        @error('file')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+
+                        {{-- Preview --}}
+                        <div class="mt-2">
+                            <img id="filePreview" src="#" alt="Preview" style="display:none; max-width: 200px;"/>
+                        </div>
                     </div>
 
                     {{-- Reason --}}
@@ -77,4 +92,18 @@
 
 
 </div>
+
+<script>
+function previewFile(input){
+    const preview = document.getElementById('filePreview');
+    if(input.files && input.files[0]){
+        const reader = new FileReader();
+        reader.onload = function(e){
+            preview.src = e.target.result;
+            preview.style.display = 'block';
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+</script>
 @endsection

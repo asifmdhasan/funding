@@ -40,6 +40,7 @@ class ReportPdfController extends Controller
     {
         $donations = Donation::query()
             ->where('donor_id', $donor->id)
+            ->whereNotNull('crisis_id')
             ->selectRaw('crisis_id, SUM(amount) as total_amount, MAX(created_at) as last_donation_date')
             ->groupBy('crisis_id')
             ->with(['crisis.category'])

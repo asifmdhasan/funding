@@ -20,19 +20,19 @@
 
         <table class="table table-bordered table-striped">
             <thead class="table-light">
-                <tr>
+                <tr class="text-center">
                     <th>Title</th>
                     <th>Required Amount</th>
                     <th>Status</th>
-                    <th width="180">Action</th>
+                    <th>Action</th>
                 </tr>
             </thead>
 
             <tbody>
             @forelse($posts as $post)
-                <tr>
+                <tr class="text-center">
                     <td>{{ $post->title }}</td>
-                    <td>৳ {{ number_format($post->required_amount, 2) }}</td>
+                    <td> {{ number_format($post->required_amount, 2) }} BDT</td>
                     <td>
                         <span class="badge 
                             {{ $post->status == 'approved' ? 'bg-success' : ($post->status == 'pending' ? 'bg-warning text-dark' : 'bg-danger') }}">
@@ -40,6 +40,9 @@
                         </span>
                     </td>
                     <td>
+                         <a href="{{ route('helpseeker.posts.donations', $post->id) }}" class="btn btn-sm btn-outline-success">
+                            View Donations
+                        </a>
                         <a href="{{ route('helpseeker.posts.edit', $post->id) }}" class="btn btn-sm btn-outline-primary">
                             Edit
                         </a>

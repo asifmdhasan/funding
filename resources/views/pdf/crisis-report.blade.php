@@ -55,25 +55,28 @@
 <table>
     <thead>
         <tr>
+            <th style="font-size: 1.1rem">Donation Date</th>
             <th style="font-size: 1.1rem">Donor</th>
             <th style="font-size: 1.1rem">Amount</th>
-            <th style="font-size: 1.1rem">Donation Date</th>
+            
         </tr>
     </thead>
     <tbody>
         @foreach($donations as $row)
             <tr>
+                <td style="font-size: 1.1rem; text-align: center">{{ \Carbon\Carbon::parse($row->last_donation_date)->format('d M Y') }}</td>
                 <td style="font-size: 1.1rem; text-align: center">{{ $row->donor->name }}</td>
                 <td style="font-size: 1.1rem; text-align: center">{{ number_format($row->total_amount, 2) }} BDT</td>
-                <td style="font-size: 1.1rem; text-align: center">{{ \Carbon\Carbon::parse($row->last_donation_date)->format('d M Y') }}</td>
+                
             </tr>
         @endforeach
 
         {{-- Total Row --}}
         <tr class="total-row">
+            <td></td>
             <td style="text-align:right; font-size: 1.2rem;">Total</td>
             <td style="font-size: 1.2rem;text-align: center">{{ number_format($totalAmount, 2) }} BDT</td>
-            <td></td>
+            
         </tr>
     </tbody>
 </table>

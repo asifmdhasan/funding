@@ -1,110 +1,104 @@
 @extends('layouts.guest-master')
 
-
 @section('content')
-<div class="container-fluid"  style="padding:5rem;">
-    <div>
-            {{-- <h4 class="fw-bold">Donor Details</h4> --}}
-            <div class="row justify-content-center">
-                <h4 class="fw-bold text-center">My Donations</h4> 
-            </div>
 
-            <div class="text-center mb-3 mt-3">
-                <a href="{{ route('donor.donations.print') }}" target="_blank"
-                    class="btn btn-outline-primary">
-                    Print Details
-                </a>
-            </div>
-        
+<div class="container-fluid" style="padding:5rem;">
+
+    {{-- Header --}}
+    <div class="row justify-content-center mb-3">
+        <h4 class="fw-bold text-center">My Donations</h4>
     </div>
 
+    {{-- Buttons to switch type --}}
+    <div class="text-center mb-4">
+        <a href="{{ route('donor.donations', ['type' => 'crisis']) }}"
+           class="btn {{ ($type ?? 'crisis') === 'crisis' ? 'btn-primary' : 'btn-outline-primary' }}">
+            Crisis Lists
+        </a>
+
+        <a href="{{ route('donor.donations', ['type' => 'help']) }}"
+           class="btn {{ ($type ?? '') === 'help' ? 'btn-primary' : 'btn-outline-primary' }}">
+            Help Post Lists
+        </a>
+    </div>
+
+    {{-- Alerts --}}
     @if(session('success'))
-        <div class="alert alert-success">
+        <div class="alert alert-success text-center">
             {{ session('success') }}
         </div>
     @endif
 
     @if(session('error'))
-        <div class="alert alert-danger">
+        <div class="alert alert-danger text-center">
             {{ session('error') }}
         </div>
     @endif
 
+    {{-- Print Button --}}
+    <div class="text-center mb-3" style="margin-top: 3rem;">
+        @if(($type ?? 'crisis') === 'crisis')
+            <a href="{{ route('donor.donations.print', ['type' => 'crisis']) }}" target="_blank"
+               class="btn btn-outline-success">
+                Print Crisis List
+            </a>
+        @else
+            <a href="{{ route('donor.donations.print.help') }}" target="_blank"
+               class="btn btn-outline-success">
+                Print Help Post List
+            </a>
+        @endif
+    </div>
+
+    {{-- Table --}}
     <div class="card">
         <div class="card-body">
-            {{-- <table class="table table-bordered table-striped" id="donationsTable">
+            <table class="table table-bordered table-striped">
                 <thead class="table-light">
-                    <tr>
-                        <th>SL</th>
-                        <th>Crisis Name</th>
-                        <th>City</th>
-                        <th>Amount</th>
+                    <tr style="text-align:center;">
                         <th>Date</th>
+
+                        @if(($type ?? 'crisis') === 'crisis')
+                            <th>Crisis Name</th>
+                            <th>City</th>
+                        @else
+                            <th>Help Post Title</th>
+                            <th>Helpseeker Name</th>
+                        @endif
+
+                        <th>Amount</th>
                     </tr>
                 </thead>
+
                 <tbody>
                     @forelse($donations as $donation)
-                        <tr>
-                            <td>{{ $loop->iteration }}</td>
+                        <tr style="text-align:center;">
+                            <td>{{ $donation->created_at->format('d M Y') }}</td>
 
-                            <td>
-                                {{ $donation->crisis->title ?? 'N/A' }}
-                            </td>
+                            @if(($type ?? 'crisis') === 'crisis')
+                                <td>{{ $donation->crisis->title ?? 'N/A' }}</td>
+                                <td>{{ $donation->crisis->city ?? '-' }}</td>
+                            @else
+                                <td>{{ $donation->helpseekerPost->title ?? 'N/A' }}</td>
+                                <td>{{ $donation->helpseekerPost->helpseeker->name ?? '-' }}</td>
+                            @endif
 
-                            <td>
-                                {{ $donation->crisis->city ?? '-' }}
-                            </td>
-
-                            <td class="fw-bold">
-                                ৳ {{ number_format($donation->amount, 2) }}
-                            </td>
-                            <td>
-                                {{ $donation->created_at->format('d M Y') }}
-                            </td>
+                            <td>{{ number_format($donation->amount, 2) }} BDT</td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" class="text-center text-muted">
+                            <td colspan="4" class="text-center text-muted">
                                 No donations found.
                             </td>
                         </tr>
                     @endforelse
                 </tbody>
-            </table> --}}
-            <table class="table table-bordered table-striped" id="donationsTable">
-                <thead class="table-light">
-                    <tr>
-                        <th>Date</th>
-                        <th>Crisis Name</th>
-                        <th>City</th>
-                        <th>Amount</th>
-                        
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse($donations as $donation)
-                        <tr>
-                            <td>{{ $donation->created_at->format('d M Y') }}</td>
-                            <td>{{ $donation->crisis->title ?? 'N/A' }}</td>
-                            <td>{{ $donation->crisis->city ?? '-' }}</td>
-                            <td>{{ number_format($donation->amount, 2) }} BDT</td>
-                            
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="5" class="text-center text-muted">No donations found.</td>
-                        </tr>
-                    @endforelse
-                </tbody>
 
-                {{-- Total Row --}}
+                {{-- Total --}}
                 <tfoot>
                     <tr class="table-light fw-bold">
                         <td colspan="3" class="text-end">Total</td>
-                        <td>
-                            {{ number_format($donations->sum('amount'), 2) }} BDT
-                        </td>
-                    
+                        <td>{{ number_format($donations->sum('amount'), 2) }} BDT</td>
                     </tr>
                 </tfoot>
             </table>
@@ -113,20 +107,3 @@
 
 </div>
 @endsection
-
-@push('scripts')
-<script>
-    $(document).ready(function () {
-        $('#donationsTable').DataTable({
-            pageLength: 10,
-            lengthChange: true,
-            searching: true,
-            ordering: true,
-            responsive: true,
-            columnDefs: [
-                { orderable: false, targets: 4 }
-            ]
-        });
-    });
-</script>
-@endpush

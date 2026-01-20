@@ -67,7 +67,7 @@ class HelpseekerController extends Controller
             //     return back()->withErrors(['email' => 'Your account is not approved yet.']);
             // }
 
-            return redirect()->route('helpseeker.dashboard');
+            return redirect()->route('helpseeker.posts.index');
         }
 
         return back()->withErrors(['email' => 'Invalid credentials.']);
@@ -124,79 +124,19 @@ class HelpseekerController extends Controller
         return view('frontend.helpseeker.dashboard', compact('helpseeker', 'posts'));
     }
 
-    // public function profile()
-    // {
-    //     $helpseeker = auth('helpseeker')->user();
-    //     return view('frontend.helpseeker.profile', compact('helpseeker'));
-    // }
+    public function profile()
+    {
+        $helpseeker = auth('helpseeker')->user();
+        return view('helpseekers.edit', compact('helpseeker'));
+    }
 
     // // ===============================
     // // Helpseeker Profile Update
     // // ===============================
-    // public function profileUpdate(Request $request)
-    // {
-    //     $helpseeker = auth('helpseeker')->user();
-
-    //     $request->validate([
-    //         'name'     => 'required|string|max:255',
-    //         'email'    => 'required|email|unique:helpseekers,email,' . $helpseeker->id,
-    //         'password' => 'nullable|string|min:6|confirmed',
-    //         'phone'    => 'nullable|string|max:20',
-    //         'city'     => 'nullable|string|max:255',
-    //     ]);
-
-    //     $helpseeker->name = $request->name;
-    //     $helpseeker->email = $request->email;
-    //     if ($request->filled('password')) {
-    //         $helpseeker->password = Hash::make($request->password);
-    //     }
-    //     $helpseeker->phone = $request->phone;
-    //     $helpseeker->city = $request->city;
-    //     $helpseeker->save();
-
-    //     return redirect()->route('helpseeker.profile')->with('success', 'Profile updated successfully.');
-    // }
-    // ===============================
-    // Helpseeker Logout
-    // ===============================
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    public function edit(Helpseeker $helpseeker)
+    public function profileUpdate(Request $request)
     {
-        return view('helpseekers.edit', compact('helpseeker'));
-    }
+        $helpseeker = auth('helpseeker')->user();
 
-    // ===============================
-    // Admin: Update helpseeker
-    // ===============================
-    public function update(Request $request, Helpseeker $helpseeker)
-    {
         $request->validate([
             'name'     => 'required|string|max:255',
             'email'    => 'required|email|unique:helpseekers,email,' . $helpseeker->id,
@@ -212,11 +152,46 @@ class HelpseekerController extends Controller
         }
         $helpseeker->phone = $request->phone;
         $helpseeker->city = $request->city;
-
         $helpseeker->save();
 
-        return redirect()->route('helpseekers.dashboard')->with('success', 'Helpseeker updated successfully.');
+        return redirect()->route('helpseeker.posts.index')->with('success', 'Profile updated successfully.');
     }
+    // ===============================
+    // Helpseeker Logout
+    // ===============================
+
+
+
+    // public function edit(Helpseeker $helpseeker)
+    // {
+    //     return view('helpseekers.edit', compact('helpseeker'));
+    // }
+
+    // ===============================
+    // Admin: Update helpseeker
+    // ===============================
+    // public function update(Request $request, Helpseeker $helpseeker)
+    // {
+    //     $request->validate([
+    //         'name'     => 'required|string|max:255',
+    //         'email'    => 'required|email|unique:helpseekers,email,' . $helpseeker->id,
+    //         'password' => 'nullable|string|min:6|confirmed',
+    //         'phone'    => 'nullable|string|max:20',
+    //         'city'     => 'nullable|string|max:255',
+    //     ]);
+
+    //     $helpseeker->name = $request->name;
+    //     $helpseeker->email = $request->email;
+    //     if ($request->filled('password')) {
+    //         $helpseeker->password = Hash::make($request->password);
+    //     }
+    //     $helpseeker->phone = $request->phone;
+    //     $helpseeker->city = $request->city;
+
+    //     $helpseeker->save();
+
+    //     return redirect()->route('helpseekers.dashboard')->with('success', 'Helpseeker updated successfully.');
+    // }
 
     public function logout(Request $request)
     {

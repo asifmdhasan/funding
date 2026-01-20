@@ -161,11 +161,13 @@ class CrisisController extends Controller
     // }
     public function crisisAnalytics(Request $request)
     {
+        // Get total donations per crisis, excluding null crisis_id
         $crises = Donation::query()
+            ->whereNotNull('crisis_id') // exclude null crisis_id
             ->selectRaw('crisis_id, SUM(amount) as total_amount')
             ->with(['crisis.category'])
             ->when($request->crisis_id, function ($q) use ($request) {
-            $q->where('crisis_id', $request->crisis_id);
+                $q->where('crisis_id', $request->crisis_id);
             })
             ->groupBy('crisis_id')
             ->get();
@@ -174,6 +176,7 @@ class CrisisController extends Controller
 
         return view('crises.analytics', compact('crises', 'crisisList'));
     }
+
     public function crisisAnalyticsDetails(Crisis $crisis)
     {
         $donations = Donation::query()
@@ -182,6 +185,7 @@ class CrisisController extends Controller
             ->groupBy('donor_id')
             ->with('donor')
             ->get();
+            // dd($donations);
 
         $totalAmount = $donations->sum('total_amount');
 
@@ -221,6 +225,7 @@ class CrisisController extends Controller
     {
         $donations = Donation::query()
             ->where('donor_id', $donor->id)
+            ->whereNotNull('crisis_id') // exclude null crisis_id
             ->selectRaw('crisis_id, SUM(amount) as total_amount, MAX(created_at) as last_donation_date')
             ->groupBy('crisis_id')
             ->with(['crisis.category'])
@@ -234,5 +239,6 @@ class CrisisController extends Controller
             'totalAmount'
         ));
     }
+
 
 }
