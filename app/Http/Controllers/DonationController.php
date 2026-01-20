@@ -36,7 +36,7 @@ class DonationController extends Controller
             'donor_id'      => auth('donor')->id(),
             'amount'        => $request->amount,
             'transaction_id'=> Str::uuid(),
-            'status'        => 'pending',
+            'status'        => 'success',
         ]);
         // return redirect()->route('payment.ssl.pay', $donation->id);
     

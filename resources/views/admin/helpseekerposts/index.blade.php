@@ -16,6 +16,7 @@
             <table class="table table-hover align-middle">
                 <thead class="table-light">
                     <tr class="text-center">
+                        <th>Helpseeker</th>
                         <th>Title</th>
                         <th>Reason</th>
                         <th>Required Amount</th>
@@ -28,6 +29,7 @@
                 <tbody>
                     @forelse($posts as $post)
                     <tr class="text-center">
+                        <td>{{ $post->helpseeker->name }}</td>
                         <td class="fw-semibold">{{ $post->title }}</td>
                         <td>{{ Str::limit($post->reason, 50) }}</td>
                         <td>৳ {{ number_format($post->required_amount, 2) }}</td>
