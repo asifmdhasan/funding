@@ -221,24 +221,56 @@ class CrisisController extends Controller
     /**
      * Donor → crisis breakdown
      */
+    // public function donorReportDetails(Donor $donor)
+    // {
+    //     $donations = Donation::query()
+    //         ->where('donor_id', $donor->id)
+    //         ->whereNotNull('crisis_id') // exclude null crisis_id
+    //         ->selectRaw('crisis_id, SUM(amount) as total_amount, MAX(created_at) as last_donation_date')
+    //         ->groupBy('crisis_id')
+    //         ->with(['crisis.category'])
+    //         ->get();
+
+    //     $totalAmount = $donations->sum('total_amount');
+
+    //     return view('crises.donor-report-details', compact(
+    //         'donor',
+    //         'donations',
+    //         'totalAmount'
+    //     ));
+    // }
     public function donorReportDetails(Donor $donor)
     {
-        $donations = Donation::query()
+        // Crisis donations
+        $crisisDonations = Donation::query()
             ->where('donor_id', $donor->id)
-            ->whereNotNull('crisis_id') // exclude null crisis_id
+            ->whereNotNull('crisis_id')
             ->selectRaw('crisis_id, SUM(amount) as total_amount, MAX(created_at) as last_donation_date')
             ->groupBy('crisis_id')
             ->with(['crisis.category'])
             ->get();
 
-        $totalAmount = $donations->sum('total_amount');
+        // Helpseeker Post donations
+        $helpseekerDonations = Donation::query()
+            ->where('donor_id', $donor->id)
+            ->whereNotNull('helpseeker_post_id')
+            ->selectRaw('helpseeker_post_id, SUM(amount) as total_amount, MAX(created_at) as last_donation_date')
+            ->groupBy('helpseeker_post_id')
+            ->with(['helpseekerPost.helpseeker'])
+            ->get();
+
+        $totalAmount =
+            $crisisDonations->sum('total_amount')
+            + $helpseekerDonations->sum('total_amount');
 
         return view('crises.donor-report-details', compact(
             'donor',
-            'donations',
+            'crisisDonations',
+            'helpseekerDonations',
             'totalAmount'
         ));
     }
+
 
 
 }

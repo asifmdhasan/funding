@@ -57,7 +57,7 @@ class DonorController extends Controller
         ]);
 
         if (Auth::guard('donor')->attempt($request->only('email', 'password'))) {
-            return redirect()->route('crisis.list');
+            return redirect()->route('donor.donations');
         }
 
         return back()->with('error', 'Invalid credentials');

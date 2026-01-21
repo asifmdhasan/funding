@@ -7,7 +7,8 @@
 
             <div class="card shadow-sm">
                 <div class="card-body">
-
+                    <!-- Image -->
+                    <img src="{{ asset($crisis->image_url) }}" class="card-img-top" style="height: 300px; object-fit: cover;">
                     <!-- Crisis Title -->
                     <h3 class="mb-3">{{ $crisis->title }}</h3>
                     <p class="text-muted mb-2"><strong>City:</strong> {{ $crisis->city }}</p>

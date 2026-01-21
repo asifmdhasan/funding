@@ -2,21 +2,31 @@
 
 namespace App\Http\Middleware;
 
-namespace App\Http\Middleware;
-
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken as Middleware;
 
 class VerifyCsrfToken extends Middleware
 {
     /**
+     * Indicates whether the XSRF-TOKEN cookie should be set on the response.
+     *
+     * @var bool
+     */
+    protected $addHttpCookie = true;
+
+    /**
      * The URIs that should be excluded from CSRF verification.
      *
      * @var array
      */
+    // protected $except = [
+    //     '/pay-via-ajax', '/success','/cancel','/fail','/ipn'
+    // ];
     protected $except = [
-        'api/*',  // Exclude all API routes from CSRF protection
-        'payment/ssl/success-ipn',
-    'payment/ssl/fail-ipn',
-    'payment/ssl/cancel-ipn',
+        // 'payment/ssl/*', 
+        '/payment/ssl/success',
+        '/payment/ssl/fail',
+        '/payment/ssl/cancel',
+        '/payment/ssl/ipn',
     ];
+
 }

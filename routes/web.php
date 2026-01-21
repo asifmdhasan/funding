@@ -31,20 +31,34 @@ use App\Http\Controllers\HelpseekerPostReportController;
 
 
 
-Route::get('/payment/ssl/pay/{donation}', [SslCommerzPaymentController::class, 'pay'])
-    ->name('payment.ssl.pay');
+// Route::get('/payment/ssl/pay/{donation}', [SslCommerzPaymentController::class, 'pay'])
+//     ->name('payment.ssl.pay');
 
-// User redirects
-Route::get('/payment/ssl/success', [SslCommerzPaymentController::class, 'success']);
-Route::get('/payment/ssl/fail', [SslCommerzPaymentController::class, 'fail']);
-Route::get('/payment/ssl/cancel', [SslCommerzPaymentController::class, 'cancel']);
+// // User redirects
+// Route::get('/payment/ssl/success', [SslCommerzPaymentController::class, 'success']);
+// Route::get('/payment/ssl/fail', [SslCommerzPaymentController::class, 'fail']);
+// Route::get('/payment/ssl/cancel', [SslCommerzPaymentController::class, 'cancel']);
 
-// IPN / Server POST callbacks
-Route::post('/payment/ssl/success-ipn', [SslCommerzPaymentController::class, 'successIpn']);
-Route::post('/payment/ssl/fail-ipn', [SslCommerzPaymentController::class, 'failIpn']);
-Route::post('/payment/ssl/cancel-ipn', [SslCommerzPaymentController::class, 'cancelIpn']);
+// // IPN / Server POST callbacks
+// Route::post('/payment/ssl/success-ipn', [SslCommerzPaymentController::class, 'successIpn']);
+// Route::post('/payment/ssl/fail-ipn', [SslCommerzPaymentController::class, 'failIpn']);
+// Route::post('/payment/ssl/cancel-ipn', [SslCommerzPaymentController::class, 'cancelIpn']);
+
+// SSLCOMMERZ Start
+
+Route::get('/pay/{donation}', [SslCommerzPaymentController::class, 'index'])->name('payment.ssl.pay');
+
+Route::post('/pay-via-ajax', [SslCommerzPaymentController::class, 'payViaAjax']);
 
 
+Route::post('/payment/ssl/success', [SslCommerzPaymentController::class, 'success'])->name('payment.ssl.success');
+Route::post('/payment/ssl/fail', [SslCommerzPaymentController::class, 'fail'])->name('payment.ssl.fail');
+Route::post('/payment/ssl/cancel', [SslCommerzPaymentController::class, 'cancel'])->name('payment.ssl.cancel');
+Route::post('/payment/ssl/ipn', [SslCommerzPaymentController::class, 'ipn'])->name('payment.ssl.ipn');
+
+
+Route::post('/ipn', [SslCommerzPaymentController::class, 'ipn']);
+//SSLCOMMERZ END
 
 
 
@@ -68,10 +82,7 @@ Route::post('/donation/helppost/store', [DonationController::class, 'helppostSto
 
 //helpseeker.posts.public
 Route::get('/help-seeker/posts', [HelpseekerPostController::class, 'publicIndex'])->name('helpseeker.posts.public');
-//make this <a href="{{ route('helpseeker.posts.show', $post->id) }}"
 Route::get('/help-seeker/posts/{post}', [HelpseekerPostController::class, 'show'])->name('helpseeker.posts.show');
-//donation.store.helpseeker
-// Route::post('/help-seeker/posts/{post}/donate', [HelpseekerPostController::class, 'helpDonate'])->name('helpseeker.posts.donate');
 // Donor Auth
 Route::get('/donor/register', [DonorController::class, 'register'])->name('donor.register');
 Route::post('/donor/register', [DonorController::class, 'store'])->name('donor.store');
@@ -82,30 +93,32 @@ Route::get('/donor/login', [DonorController::class, 'login'])->name('donor.login
 Route::post('/donor/login', [DonorController::class, 'authenticate'])->name('donor.authenticate');
 
 // Route::post('/donor/logout', [DonorController::class, 'logout'])->name('donor.logout');
+    Route::get('/donor/success', [DonationController::class, 'paymentSuccess'])->name('payment.success');
+    Route::middleware('auth:donor')->group(function () {
+        
+        // Profile page
+        Route::get('/donor/profile', [DonorController::class, 'profile'])
+            ->name('donor.profile');
+        //update
+        Route::put('/donor/profile', [DonorController::class, 'updateProfile'])
+            ->name('donor.update');
 
-Route::middleware('auth:donor')->group(function () {
-    
-    // Profile page
-    Route::get('/donor/profile', [DonorController::class, 'profile'])
-        ->name('donor.profile');
-    //update
-    Route::put('/donor/profile', [DonorController::class, 'updateProfile'])
-        ->name('donor.update');
+        //Donor all donations list view table
+        Route::get('/donor/donations', [DonorController::class, 'donations'])->name('donor.donations');
 
-    //Donor all donations list view table
-    Route::get('/donor/donations', [DonorController::class, 'donations'])->name('donor.donations');
-    // Route::get('/donor/success', [DonationController::class, 'paymentSuccess'])->name('payment.success');
 
-    // Logout
-    Route::post('/donor/logout', [DonorController::class, 'logout'])
-        ->name('donor.logout');
+        // Logout
+        Route::post('/donor/logout', [DonorController::class, 'logout'])
+            ->name('donor.logout');
 
-    Route::get('/donor/donations/print', [DonorController::class, 'printDonations'])
-    ->name('donor.donations.print');
-    Route::get('/donations/print-help', [DonorController::class, 'printHelpPostDonations'])
-    ->name('donor.donations.print.help');
+        Route::get('/donor/donations/print', [DonorController::class, 'printDonations'])
+        ->name('donor.donations.print');
+        Route::get('/donations/print-help', [DonorController::class, 'printHelpPostDonations'])
+        ->name('donor.donations.print.help');
 
-});
+        
+
+    });
 
 
 

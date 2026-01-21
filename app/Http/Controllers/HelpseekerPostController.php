@@ -7,15 +7,30 @@ use App\Models\HelpseekerPost;
 
 class HelpseekerPostController extends Controller
 {
+    // public function publicIndex()
+    // {
+    //     $posts = HelpseekerPost::with(['helpseeker', 'donations'])
+    //         ->where('status', 'approved')
+    //         ->latest()
+    //         ->get();
+
+    //     return view('frontend.helpseeker.posts.public_index', compact('posts'));
+    // }
     public function publicIndex()
     {
-        $posts = HelpseekerPost::with(['helpseeker', 'donations'])
+        $posts = HelpseekerPost::with([
+                'helpseeker',
+                'donations' => function ($q) {
+                    $q->where('status', 'success');
+                }
+            ])
             ->where('status', 'approved')
             ->latest()
             ->get();
 
         return view('frontend.helpseeker.posts.public_index', compact('posts'));
     }
+
     public function show(HelpseekerPost $post)
     {
         $post = HelpseekerPost::with(['helpseeker', 'donations.donor'])

@@ -36,30 +36,69 @@ class ReportPdfController extends Controller
         );
     }
 
+    // public function donorReport(Donor $donor)
+    // {
+    //     $donations = Donation::query()
+    //         ->where('donor_id', $donor->id)
+    //         ->whereNotNull('crisis_id')
+    //         ->selectRaw('crisis_id, SUM(amount) as total_amount, MAX(created_at) as last_donation_date')
+    //         ->groupBy('crisis_id')
+    //         ->with(['crisis.category'])
+    //         ->get();
+
+    //     $totalAmount = $donations->sum('total_amount');
+
+    //     $html = view('pdf.donor-report', compact(
+    //         'donor',
+    //         'donations',
+    //         'totalAmount'
+    //     ))->render();
+
+    //     $mpdf = new Mpdf(['format' => 'A4']);
+    //     $mpdf->WriteHTML($html);
+
+    //     return $mpdf->Output(
+    //         'donor-report-'.$donor->id.'.pdf',
+    //         'I'
+    //     );
+    // }
     public function donorReport(Donor $donor)
-    {
-        $donations = Donation::query()
-            ->where('donor_id', $donor->id)
-            ->whereNotNull('crisis_id')
-            ->selectRaw('crisis_id, SUM(amount) as total_amount, MAX(created_at) as last_donation_date')
-            ->groupBy('crisis_id')
-            ->with(['crisis.category'])
-            ->get();
+{
+    // Crisis donations
+    $crisisDonations = Donation::query()
+        ->where('donor_id', $donor->id)
+        ->whereNotNull('crisis_id')
+        ->selectRaw('crisis_id, SUM(amount) as total_amount, MAX(created_at) as last_donation_date')
+        ->groupBy('crisis_id')
+        ->with(['crisis.category'])
+        ->get();
 
-        $totalAmount = $donations->sum('total_amount');
+    // Helpseeker post donations
+    $helpseekerDonations = Donation::query()
+        ->where('donor_id', $donor->id)
+        ->whereNotNull('helpseeker_post_id')
+        ->selectRaw('helpseeker_post_id, SUM(amount) as total_amount, MAX(created_at) as last_donation_date')
+        ->groupBy('helpseeker_post_id')
+        ->with(['helpseekerPost.helpseeker'])
+        ->get();
 
-        $html = view('pdf.donor-report', compact(
-            'donor',
-            'donations',
-            'totalAmount'
-        ))->render();
+    $totalAmount =
+        $crisisDonations->sum('total_amount')
+        + $helpseekerDonations->sum('total_amount');
 
-        $mpdf = new Mpdf(['format' => 'A4']);
-        $mpdf->WriteHTML($html);
+    $html = view('pdf.donor-report', compact(
+        'donor',
+        'crisisDonations',
+        'helpseekerDonations',
+        'totalAmount'
+    ))->render();
 
-        return $mpdf->Output(
-            'donor-report-'.$donor->id.'.pdf',
-            'I'
-        );
-    }
+    $mpdf = new Mpdf(['format' => 'A4']);
+    $mpdf->WriteHTML($html);
+
+    return $mpdf->Output(
+        'donor-report-'.$donor->id.'.pdf',
+        'I'
+    );
+}
 }

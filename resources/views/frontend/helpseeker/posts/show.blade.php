@@ -1,105 +1,3 @@
-{{-- @extends('layouts.guest-master')
-
-@section('content')
-
-<style>
-    .progress {
-        background-color: #e9ecef;
-    }
-    .progress-bar {
-        background-color: red;
-    }
-</style>
-
-<div class="container py-5">
-
-
-<div class="row justify-content-center">
-    <div class="col-lg-8">
-
-        <!-- Helpseeker Details -->
-        <div class="card shadow-sm mb-4">
-            <div class="card-header fw-semibold">
-                Helpseeker Information
-            </div>
-            <div class="card-body">
-
-                <p><strong>Name:</strong> {{ $post->helpseeker->name }}</p>
-
-                @if($post->helpseeker->email)
-                    <p><strong>Email:</strong> {{ $post->helpseeker->email }}</p>
-                @endif
-
-                @if($post->helpseeker->phone)
-                    <p><strong>Phone:</strong> {{ $post->helpseeker->phone }}</p>
-                @endif
-
-                @if($post->helpseeker->city)
-                    <p><strong>City:</strong> {{ $post->helpseeker->city }}</p>
-                @endif
-
-            </div>
-        </div>
-
-        <div class="card shadow-sm mb-4">
-            <div class="card-body">
-
-                <h3 class="fw-bold mb-2">{{ $post->title }}</h3>
-
-                <p class="text-muted mb-3">
-                    Requested by <strong>{{ $post->helpseeker->name }}</strong>
-                    @if($post->helpseeker->city)
-                        · {{ $post->helpseeker->city }}
-                    @endif
-                </p>
-
-                <p class="mb-4">
-                    {{ $post->reason }}
-                </p>
-
-                @php
-                    $collected = $post->collectedAmount();
-                    $percent = $post->required_amount > 0
-                        ? ($collected / $post->required_amount) * 100
-                        : 0;
-                    $percent = min(100, $percent);
-                @endphp
-
-                <div class="progress mb-2" style="height: 10px;">
-                    <div class="progress-bar"
-                         role="progressbar"
-                         style="width: {{ $percent }}%;"
-                         aria-valuenow="{{ $percent }}"
-                         aria-valuemin="0"
-                         aria-valuemax="100">
-                    </div>
-                </div>
-
-                <div class="d-flex justify-content-between small text-muted mb-4">
-                    <span>
-                        {{ number_format($collected) }} collected
-                    </span>
-                    <span>
-                        Target: {{ number_format($post->required_amount) }}
-                    </span>
-                </div>
-
-                <a href="#"
-                   class="btn btn-dark w-100 fw-semibold">
-                    Donate Now
-                </a>
-
-            </div>
-        </div>
-
-    </div>
-</div>
-
-
-</div>
-
-@endsection --}}
-
 
 
 
@@ -107,6 +5,14 @@
 @extends('layouts.guest-master')
 
 @section('content')
+<style>
+    .post-cover {
+        width: 100%;;
+        object-fit: cover;
+        border-radius: 6px;
+        margin-bottom: 15px;
+    }
+</style>
 
 <div class="container py-5">
     <div class="row justify-content-center">
@@ -141,6 +47,12 @@
                 Helpseeker Post Information
             </div>
             <div class="card-body">
+                {{-- Image --}}
+                    @if($post->file_path && file_exists(public_path($post->file_path)))
+                        <img src="{{ asset($post->file_path) }}"
+                            alt="Helpseeker Post Image"
+                            class="post-cover">
+                    @endif
                 
 
                 <!-- Post Title -->

@@ -19,6 +19,12 @@ return Application::configure(basePath: dirname(__DIR__))
             'setLocale' => SetLocale::class,
             'permission' => CheckPermission::class,
         ]);
+        $middleware->validateCsrfTokens(except: [
+            '/payment/ssl/success',
+            '/payment/ssl/fail',
+            '/payment/ssl/cancel',
+            '/payment/ssl/ipn',
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
